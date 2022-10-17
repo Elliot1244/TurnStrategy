@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField] int _moveSpeed;
-    [SerializeField] float _stoppingDistance;
+    [SerializeField] private int _moveSpeed;
+    [SerializeField] private float _stoppingDistance;
     private Vector3 _targetPosition;
 
 
@@ -17,9 +17,9 @@ public class Unit : MonoBehaviour
             transform.position += _moveDirection * _moveSpeed * Time.deltaTime;
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
+        if(Input.GetMouseButtonDown(0))
         {
-            Move(new Vector3(4, 0, 4));
+            Move(MouseWorld.GetPosition());
         }
     }
 
