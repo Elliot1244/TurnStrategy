@@ -13,6 +13,7 @@ public class Unit : MonoBehaviour
 
     private void Awake()
     {
+        //A l'initialisation, le point d'arrivée est la position de l'unit
         _targetPosition = transform.position;
     }
 
@@ -28,9 +29,14 @@ public class Unit : MonoBehaviour
     {
         if(Vector3.Distance(transform.position, _targetPosition) > _stoppingDistance)
         {
+            //activation de l'animation
             _animator.SetBool("isWalking", true);
+
+            //Direction de déplacement de l'unit
             Vector3 _moveDirection = (_targetPosition - transform.position).normalized;
             transform.position += _moveDirection * _moveSpeed * Time.deltaTime;
+
+            //Rotation de l'unit
             transform.forward = Vector3.Lerp(transform.forward, _moveDirection, Time.deltaTime * _rotateSpeed);
         }
         else
@@ -40,7 +46,7 @@ public class Unit : MonoBehaviour
 
         GridPosition _newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
 
-        //Si l'unit change de position sur la grill
+        //Si l'unit change de position sur la grille
         //(Opérateur non valide de base, voir Grid Position pour la création des opérateurs de la struct GridPosition)
         if(_newGridPosition != _gridPosition)
         {
