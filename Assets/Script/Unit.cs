@@ -9,10 +9,19 @@ public class Unit : MonoBehaviour
     [SerializeField] private float _stoppingDistance;
     [SerializeField] private Animator _animator;
     private Vector3 _targetPosition;
+    private GridPosition _gridPosition;
 
     private void Awake()
     {
         _targetPosition = transform.position;
+    }
+
+    private void Start()
+    {
+
+        //Au start on défini la position sur la grille de l'unit.
+        _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        LevelGrid.Instance.SetUnitAtGridPosition(_gridPosition, this);
     }
 
     private void Update()
@@ -27,6 +36,16 @@ public class Unit : MonoBehaviour
         else
         {
             _animator.SetBool("isWalking", false);
+        }
+
+        GridPosition _newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+
+        //Si l'unit change de position sur la grill
+        //(Opérateur non valide de base, voir Grid Position pour la création des opérateurs de la struct GridPosition)
+        if(_newGridPosition != _gridPosition)
+        {
+            LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition, _newGridPosition);
+            _gridPosition = _newGridPosition;
         }
     }
 
