@@ -6,26 +6,43 @@ public class GridObject
 {
     private GridSystem _gridSystem;
     private GridPosition _gridPosition;
-    private Unit _unit;
+
+    //sans liste d'unit, problème si deux units se croisent sur la même case
+    private List<Unit> _unitList;
 
     public GridObject(GridSystem gridSystem, GridPosition gridPosition)
     {
         this._gridSystem = gridSystem;
         this._gridPosition = gridPosition;
+        _unitList = new List<Unit>();
     }
 
     public override string ToString()
     {
-        return _gridPosition.ToString() + "\n" + _unit;
+        string unitString = "";
+        foreach(Unit unit in _unitList)
+        {
+            unitString += unit + " \n";
+        }
+        return _gridPosition.ToString() + "\n" + unitString;
     }
 
-    public void SetUnit(Unit unit)
+
+    //Ajoute une unit à la liste d'unit
+    public void AddUnit(Unit unit)
     {
-        this._unit = unit;
+        _unitList.Add(unit);
     }
 
-    public Unit GetUnit()
+    //Enlève une unit de la liste d'unit
+    public void RemoveUnit(Unit unit)
     {
-        return _unit;
+        _unitList.Remove(unit);
+    }
+
+    //Récupère la liste d'unit
+    public List<Unit> GetUnitList()
+    {
+        return _unitList;
     }
 }

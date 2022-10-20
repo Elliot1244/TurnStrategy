@@ -21,7 +21,7 @@ public class Unit : MonoBehaviour
 
         //Au start on défini la position sur la grille de l'unit.
         _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-        LevelGrid.Instance.SetUnitAtGridPosition(_gridPosition, this);
+        LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
     }
 
     private void Update()

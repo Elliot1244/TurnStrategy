@@ -200,8 +200,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.4708875, y: 0.038623817, z: -0.020647047, w: 0.88110554}
-  m_LocalPosition: {x: -0.24555874, y: 5.10917, z: -2.805814}
+  m_LocalRotation: {x: 0.44422996, y: -0.040018994, z: 0.019856958, w: 0.89479834}
+  m_LocalPosition: {x: 2.9940665, y: 7.9996767, z: -6.045496}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -737,6 +737,52 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1326950542
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1326950544}
+  - component: {fileID: 1326950543}
+  m_Layer: 0
+  m_Name: LevelGrid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1326950543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326950542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec6243ba8c16ad540988f50ab3c81ef5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gridDebugObjectPrefab: {fileID: 3932401931222722318, guid: ca59447ad14678541b064c1659eed8e2,
+    type: 3}
+--- !u!4 &1326950544
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326950542}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1528017162
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,8 +812,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b381e0f9809b3445bad156a5d215ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gridDebugObjectPrefab: {fileID: 3932401931222722318, guid: ca59447ad14678541b064c1659eed8e2,
-    type: 3}
 --- !u!4 &1528017164
 Transform:
   m_ObjectHideFlags: 0
