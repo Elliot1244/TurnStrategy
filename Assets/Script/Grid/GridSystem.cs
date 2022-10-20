@@ -17,7 +17,7 @@ public class GridSystem
         this._height = height;
         this._cellSize = cellSize;  
 
-        _gridObjectArray = new GridObject[_width, _height];
+        _gridObjectArray = new GridObject[width, height];
 
 
         //Construit la grille selon les valeurs données en Ligne 10
@@ -33,9 +33,9 @@ public class GridSystem
     }
 
     //Converti le vector3 en int
-    public Vector3 GetWorldPosition(int x, int z)
+    public Vector3 GetWorldPosition(GridPosition gridPosition)
     {
-        return new Vector3(x, 0, z) * _cellSize;
+        return new Vector3(gridPosition.x, 0, gridPosition.z) * _cellSize;
     }
 
     public GridPosition GetGridPosition(Vector3 worldPosition)
@@ -52,9 +52,18 @@ public class GridSystem
         {
             for (int z = 0; z < _height; z++)
             {
-                GameObject.Instantiate(debugPrefab, GetWorldPosition(x, z), Quaternion.identity);
+                GridPosition gridPosition = new GridPosition(x, z);
+
+                Transform debugTransform = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
+                GridDebugObject gridDebugObject = debugTransform.GetComponent<GridDebugObject>();
+                gridDebugObject.SetGridObject(GetGridObject(gridPosition));
             }
         }
+    }
+
+    public GridObject GetGridObject(GridPosition gridPosition)
+    {
+        return _gridObjectArray[gridPosition.x, gridPosition.z];
     }
 
 
