@@ -4,17 +4,12 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    [SerializeField] private float _rotateSpeed;
-    [SerializeField] private int _moveSpeed;
-    [SerializeField] private float _stoppingDistance;
-    [SerializeField] private Animator _animator;
-    private Vector3 _targetPosition;
     private GridPosition _gridPosition;
+    private MoveAction _moveAction;
 
     private void Awake()
     {
-        //A l'initialisation, le point d'arrivée est la position de l'unit
-        _targetPosition = transform.position;
+        _moveAction = GetComponent<MoveAction>();
     }
 
     private void Start()
@@ -27,23 +22,6 @@ public class Unit : MonoBehaviour
 
     private void Update()
     {
-        if(Vector3.Distance(transform.position, _targetPosition) > _stoppingDistance)
-        {
-            //activation de l'animation
-            _animator.SetBool("isWalking", true);
-
-            //Direction de déplacement de l'unit
-            Vector3 _moveDirection = (_targetPosition - transform.position).normalized;
-            transform.position += _moveDirection * _moveSpeed * Time.deltaTime;
-
-            //Rotation de l'unit
-            transform.forward = Vector3.Lerp(transform.forward, _moveDirection, Time.deltaTime * _rotateSpeed);
-        }
-        else
-        {
-            _animator.SetBool("isWalking", false);
-        }
-
         GridPosition _newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
 
         //Si l'unit change de position sur la grille
@@ -55,10 +33,17 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void Move(Vector3 _targetPosition)
+    public MoveAction GetMoveAction()
     {
-        this._targetPosition = _targetPosition;
+        return _moveAction;
     }
+
+    public GridPosition GetGridPosition()
+    {
+        return _gridPosition;
+    }
+
+  
 
    
 }

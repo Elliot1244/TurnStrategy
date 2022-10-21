@@ -11,6 +11,7 @@ public class LevelGrid : MonoBehaviour
     private GridSystem _gridSystem;
     private void Awake()
     {
+        //S'il y a plus qu'une grille active à l'awake
         if (Instance != null)
         {
             Debug.LogError("More than one instance" + transform + " - " + Instance);
@@ -47,6 +48,17 @@ public class LevelGrid : MonoBehaviour
         return _gridSystem.GetGridPosition(worldPosition);
     }
 
+    public Vector3 GetWorldPosition(GridPosition gridPosition)
+    {
+        return _gridSystem.GetWorldPosition(gridPosition);
+    }
+
+    //Retourn une position valide sur la grille
+    public bool IsValidgridPosition(GridPosition gridPosition)
+    {
+        return _gridSystem.IsValidgridPosition(gridPosition);
+    }
+
     public void UnitMovedGridPosition(Unit unit, GridPosition fromGridPosition, GridPosition toGridPosition)
     {
         //On enlève l'ancien emplacement de l'unit
@@ -54,6 +66,13 @@ public class LevelGrid : MonoBehaviour
 
         //On récupère le nouvel emplacement de l'unit et l'unit elle même
         AddUnitAtGridPosition(toGridPosition, unit);
+    }
+
+    //Si la position de la grille est déjà occupée par une unit
+    public bool HasAnyUnitOnGridPosition(GridPosition gridPosition)
+    {
+        GridObject gridObject = _gridSystem.GetGridObject(gridPosition);
+        return gridObject.HasAnyUnit();
     }
 
 }

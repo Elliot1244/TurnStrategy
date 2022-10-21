@@ -66,5 +66,14 @@ public class GridSystem
         return _gridObjectArray[gridPosition.x, gridPosition.z];
     }
 
+    //Test si la position sur la grille est valide
+    public bool IsValidgridPosition(GridPosition gridPosition)
+    {
+        return gridPosition.x >= 0 && 
+               gridPosition.z >= 0 && 
+               gridPosition.x < _width && 
+               gridPosition.z < _height;
+    }
+
 
 }
