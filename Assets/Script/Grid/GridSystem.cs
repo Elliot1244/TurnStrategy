@@ -20,7 +20,7 @@ public class GridSystem
         _gridObjectArray = new GridObject[width, height];
 
 
-        //Construit la grille selon les valeurs données en Ligne 10
+        //Construit la grille selon les valeurs données en Ligne 8 à 10
         for (int x = 0; x < _width; x++)
         {
             for (int z = 0; z < _height; z++)
@@ -73,6 +73,16 @@ public class GridSystem
                gridPosition.z >= 0 && 
                gridPosition.x < _width && 
                gridPosition.z < _height;
+    }
+
+    public int GetWidth()
+    {
+        return _width;
+    }
+
+    public int GetHeight()
+    {
+        return _height;
     }
 
 
