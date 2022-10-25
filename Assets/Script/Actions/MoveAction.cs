@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class MoveAction : BaseAction
 {
@@ -44,14 +45,18 @@ public class MoveAction : BaseAction
             //Une fois l'unit arrivée à destination
             _animator.SetBool("isWalking", false);
             _isActive = false;
+            _onActionComplete();
         }
 
         //Rotation de l'unit
         transform.forward = Vector3.Lerp(transform.forward, _moveDirection, Time.deltaTime * _rotateSpeed);
     }
 
-    public void Move(GridPosition gridPosition)
+
+    //Fait bouger l'unit vers la position de la souris
+    public void Move(GridPosition gridPosition, Action _onActionComplete)
     {
+        this._onActionComplete = _onActionComplete;
         this._targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         _isActive = true;
     }
@@ -110,6 +115,11 @@ public class MoveAction : BaseAction
         }
 
         return validGridPosition;
+    }
+
+    public override string GetActionName()
+    {
+        return "Move";
     }
 
 }
