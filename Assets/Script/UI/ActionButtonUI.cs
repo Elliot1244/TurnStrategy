@@ -8,10 +8,15 @@ public class ActionButtonUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textMeshPro;
     [SerializeField] private Button _button;
+    [SerializeField] private GameObject _selectedGameObject;
+
+    private BaseAction _baseAction;
 
 
     public void SetBaseAction(BaseAction baseAction)
     {
+
+        this._baseAction = baseAction;
 
         //On modifie le text de chaque bouttons selon les actions des bouttons
         _textMeshPro.text = baseAction.GetActionName().ToUpper();
@@ -22,8 +27,10 @@ public class ActionButtonUI : MonoBehaviour
         });
     }
 
-    private void MoveActionBtn_Click()
+    public void UpdateSelectedVisual()
     {
 
+        BaseAction selectedBaseAction = UnitActionSystem.Instance.GetSelectedAction();
+        _selectedGameObject.SetActive(selectedBaseAction == _baseAction);    
     }
 }

@@ -80,11 +80,11 @@ public class GridSystemVisual : MonoBehaviour
         HideAllGridPosition();
 
         //Récupère l'unit sélectionnée via UnitActionSystem et GetSelectedUnit
-        Unit _selectedUnit = UnitActionSystem.Instance.GetSelectedUnit();
+        BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
 
         //On affiche les cases dispos pour l'unit sélectionnée
         ShowGridPositionList(
-          _selectedUnit.GetMoveAction().GetValidActionGridPosition()
+          selectedAction.GetValidActionGridPosition()
         );
     }
 }

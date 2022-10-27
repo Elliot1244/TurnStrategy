@@ -15,7 +15,7 @@ public class SpinAction : BaseAction
 
     private void Update()
     {
-        if(!_isActive)
+        if (!_isActive)
         {
             return;
         }
@@ -28,7 +28,7 @@ public class SpinAction : BaseAction
 
 
         //Si le total de la rotation == 360, on arrête la rotation
-        if(_totalSpinAmount >= 360f)
+        if (_totalSpinAmount >= 360f)
         {
 
             _isActive = false;
@@ -39,7 +39,7 @@ public class SpinAction : BaseAction
     }
 
     //Fonction active un spin de l'unit et reset le _totalSptinAmount
-    public void Spin(Action _onActionComplete)
+    public override void TakeAction(GridPosition gridPosition, Action _onActionComplete)
     {
         this._onActionComplete = _onActionComplete;
         _isActive = true;
@@ -49,5 +49,23 @@ public class SpinAction : BaseAction
     public override string GetActionName()
     {
         return "Spin";
+    }
+
+    public override List<GridPosition> GetValidActionGridPosition()
+    {
+        GridPosition unitGridPosition = _unit.GetGridPosition();
+
+        //La seule case valide est la case où se trouve l'unit
+        return new List<GridPosition>
+        {
+            unitGridPosition
+        };
+    }
+
+
+    //Fonction qui modifie le coût de l'action spin grâce à l'override
+    public override int GetActionPointsCost()
+    {
+        return 2;
     }
 }

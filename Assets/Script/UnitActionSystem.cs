@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.EventSystems;
 
 public class UnitActionSystem : MonoBehaviour
 {
@@ -17,6 +18,17 @@ public class UnitActionSystem : MonoBehaviour
 
     //Evenement changement d'unit sélectionnée
     public event EventHandler OnSelectedUnitChanged;
+
+    //Evenement changement d'action sélectionnée
+    public event EventHandler OnSelectedActionChanged;
+
+    //Evenement Busy
+    public event EventHandler<bool> OnBusyChanged;
+
+    //Evenement lors de l'activation d'une action
+    public event EventHandler OnActionStarted;
+
+
 
     private void Awake()
     {
@@ -43,6 +55,12 @@ public class UnitActionSystem : MonoBehaviour
             return;
         }
 
+        //Si la souris est sur un élément de l'UI
+        if(EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }
+
 
         if (TryHandleUnitSelection())
         {
@@ -58,20 +76,21 @@ public class UnitActionSystem : MonoBehaviour
         {
             GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
 
-            switch (_selectedAction)
+
+            //Si l'action choisie est sur une position valide de la grille
+            if(_selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {
-                case MoveAction moveAction:
-                    //Si la souris est dans la limite des cases autorisées alors on bouge au click
-                    if (_selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
-                    {
-                        SetBusy();
-                        moveAction.Move(mouseGridPosition, ClearBusy);
-                    }
-                    break;
-                case SpinAction spinAction:
+
+                //L'unit essaye de dépenser les points d'action
+                if(_selectedUnit.TrySpendActionPoints(_selectedAction))
+                {
                     SetBusy();
-                    spinAction.Spin(ClearBusy);
-                    break;
+                    _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+
+
+                    //Trigger l'event OnActionStarted
+                    OnActionStarted?.Invoke(this, EventArgs.Empty);
+                } 
             }
         }
     }
@@ -81,14 +100,20 @@ public class UnitActionSystem : MonoBehaviour
     private void SetBusy()
     {
         _isBusy = true;
+
+        OnBusyChanged?.Invoke(this, _isBusy);
     }
 
     //L'unit n'est pas/plus busy
     private void ClearBusy()
     {
         _isBusy = false;
+
+        OnBusyChanged?.Invoke(this, _isBusy);
     }
 
+
+    //Fonction qui sélectionne l'unit
     private bool TryHandleUnitSelection()
     {
         if(Input.GetMouseButtonDown(0))
@@ -100,6 +125,13 @@ public class UnitActionSystem : MonoBehaviour
             {
                 if (rayCastHit.transform.TryGetComponent<Unit>(out Unit unit))
                 {
+
+                    //Si le cleck se fait sur une unité déjà sélectionnée
+                    if(unit == _selectedUnit)
+                    {
+                        return false;
+                    }
+
                     SetSelectedUnit(unit);
                     return true;
                 }
@@ -122,12 +154,19 @@ public class UnitActionSystem : MonoBehaviour
     public void SetSelectedAction(BaseAction baseAction)
     {
         _selectedAction = baseAction;
-    }
+
+        OnSelectedActionChanged?.Invoke(this, EventArgs.Empty);
+}
 
 
     //Retourne l'unit sélectionnée actuellement
     public Unit GetSelectedUnit()
     {
         return _selectedUnit;
+    }
+
+    public BaseAction GetSelectedAction()
+    {
+        return _selectedAction;
     }
 }

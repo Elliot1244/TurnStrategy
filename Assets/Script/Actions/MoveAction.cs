@@ -54,24 +54,16 @@ public class MoveAction : BaseAction
 
 
     //Fait bouger l'unit vers la position de la souris
-    public void Move(GridPosition gridPosition, Action _onActionComplete)
+    public override void TakeAction(GridPosition gridPosition, Action _onActionComplete)
     {
         this._onActionComplete = _onActionComplete;
         this._targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
         _isActive = true;
     }
 
-    public bool IsValidActionGridPosition(GridPosition gridPosition)
-    {
-        List<GridPosition> validGridPositionList = GetValidActionGridPosition();
-        //Pour vérifier si la position est valide, on va dans la liste des position (validGridPositionList)
-        //et on check si on y trouve la gridPosition qui est passée en paramètre dans IsValidActionGridPosition(GridPosition gridPosition) via Contains()
-        return validGridPositionList.Contains(gridPosition);
-    }
-
 
     //Récupère une liste de gridposition sur lesquelles on peut bouger
-    public List<GridPosition> GetValidActionGridPosition()
+    public override List<GridPosition> GetValidActionGridPosition()
     {
         List<GridPosition> validGridPosition = new List<GridPosition>();
 
@@ -121,5 +113,10 @@ public class MoveAction : BaseAction
     {
         return "Move";
     }
+
+   /* public virtual int GetActionPointsCost()
+    {
+        return 1;
+    }*/
 
 }
