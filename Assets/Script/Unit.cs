@@ -8,6 +8,8 @@ public class Unit : MonoBehaviour
     //Constante qui définie le nombre de point d'action par unité
     private const int ACTION_POINT_MAX = 2;
 
+    [SerializeField] private bool _isEnemy;
+
     public static event EventHandler OnAnyActionPointChanged;
 
     private GridPosition _gridPosition;
@@ -67,6 +69,11 @@ public class Unit : MonoBehaviour
        return _baseActionArray;
     }
 
+    public Vector3 GetWorldPosition()
+    {
+        return transform.position;
+    }
+
 
     //Si on peut dépenser des actions points alors on le fait
     public bool TrySpendActionPoints(BaseAction baseAction)
@@ -110,8 +117,22 @@ public class Unit : MonoBehaviour
 
     private void TurnSystem_OnTurnChanged(object sender, EventArgs e)
     {
-        _actionPoints = ACTION_POINT_MAX;
 
-        OnAnyActionPointChanged?.Invoke(this, EventArgs.Empty);
+        if(IsEnemy() && !TurnSystem.Instance.IsPlayerTurn() || (!IsEnemy() && TurnSystem.Instance.IsPlayerTurn()))
+            {
+            _actionPoints = ACTION_POINT_MAX;
+
+            OnAnyActionPointChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public bool IsEnemy()
+    {
+        return _isEnemy;
+    }
+
+    public void Damage()
+    {
+        Debug.Log(transform + " Damaged !");
     }
 }

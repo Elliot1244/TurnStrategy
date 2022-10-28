@@ -55,6 +55,11 @@ public class UnitActionSystem : MonoBehaviour
             return;
         }
 
+        if(!TurnSystem.Instance.IsPlayerTurn())
+        {
+            return;
+        }
+
         //Si la souris est sur un élément de l'UI
         if(EventSystem.current.IsPointerOverGameObject())
         {
@@ -128,6 +133,11 @@ public class UnitActionSystem : MonoBehaviour
 
                     //Si le cleck se fait sur une unité déjà sélectionnée
                     if(unit == _selectedUnit)
+                    {
+                        return false;
+                    }
+
+                    if(unit.IsEnemy())
                     {
                         return false;
                     }

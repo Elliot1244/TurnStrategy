@@ -2216,6 +2216,7 @@ GameObject:
   - component: {fileID: 8163788953833799234}
   - component: {fileID: 6399545339974429222}
   - component: {fileID: 6307915090616159134}
+  - component: {fileID: 788247155882038484}
   m_Layer: 7
   m_Name: Unit
   m_TagString: Untagged
@@ -2252,6 +2253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a867973af17a6459d027b21e15c090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isEnemy: 0
 --- !u!65 &8163788953833799234
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2295,3 +2297,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _totalSpinAmount: 0
+--- !u!114 &788247155882038484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8362750874518404861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3363a77173ce2dc48bf6af477fd554fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
