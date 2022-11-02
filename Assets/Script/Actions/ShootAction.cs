@@ -165,6 +165,6 @@ public class ShootAction : BaseAction
             targetUnit = _targetUnit,
             shootingUnit = _unit
         }) ;
-        _targetUnit.Damage();
+        _targetUnit.Damage(40);
     }
 }

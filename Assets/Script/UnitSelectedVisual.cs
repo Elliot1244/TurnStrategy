@@ -37,4 +37,10 @@ public class UnitSelectedVisual : MonoBehaviour
             _meshRenderer.enabled = false;
         }
     }
+
+    private void OnDestroy()
+    {
+        //Dès qu'une unit est détruite, on se désabonne de l'évènement de changement de ladite unit
+        UnitActionSystem.Instance.OnSelectedUnitChanged -= UnityActionSystem_OnSelectedUnitChanged;
+    }
 }

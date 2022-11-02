@@ -13,6 +13,12 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 7d22fc6b9a431b043a917fb89a80bcfc, type: 2}
+    - target: {fileID: 7521608653493061863, guid: 41d284a9b930acf4d8c171a029218b26,
+        type: 3}
+      propertyPath: _ragdollPrefab
+      value: 
+      objectReference: {fileID: 7336479445681472929, guid: 400fb394c3653aa488e18b48581c975c,
+        type: 3}
     - target: {fileID: 8362750874518404858, guid: 41d284a9b930acf4d8c171a029218b26,
         type: 3}
       propertyPath: _isEnemy

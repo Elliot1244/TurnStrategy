@@ -15,6 +15,7 @@ public class Unit : MonoBehaviour
     private GridPosition _gridPosition;
     private MoveAction _moveAction;
     private SpinAction _spinAction;
+    private HealthSystem _healthSystem;
     private BaseAction[] _baseActionArray;
     private int _actionPoints = ACTION_POINT_MAX;
 
@@ -24,6 +25,7 @@ public class Unit : MonoBehaviour
         _moveAction = GetComponent<MoveAction>();
         _spinAction = GetComponent<SpinAction>();
         _baseActionArray = GetComponents<BaseAction>();
+        _healthSystem = GetComponent<HealthSystem>();
     }
 
     private void Start()
@@ -34,6 +36,8 @@ public class Unit : MonoBehaviour
         LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition, this);
 
         TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
+
+        _healthSystem.OnDead += HealthSystem_OnDead;
     }
 
     private void Update()
@@ -131,8 +135,21 @@ public class Unit : MonoBehaviour
         return _isEnemy;
     }
 
-    public void Damage()
+
+    //Méthode qui prend en paramètre un montant de damage puis appelle la méthode Damage du script HealthSystem pour réduire la vie
+    public void Damage(int damageAmount)
     {
-        Debug.Log(transform + " Damaged !");
+        _healthSystem.Damage(damageAmount);
+    }
+
+
+    //Méthode inscrite à l'évènement OnDead, qui détruit le gamobject sans point de vie restant 
+    private void HealthSystem_OnDead(object sender, EventArgs e)
+    {
+
+        //Supprime la coloration de la case indiquant qu'il y a quelqu'un dessus
+        LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
+
+        Destroy(gameObject);
     }
 }
