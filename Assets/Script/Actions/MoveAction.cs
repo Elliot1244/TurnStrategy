@@ -5,13 +5,16 @@ using System;
 
 public class MoveAction : BaseAction
 {
-    [SerializeField] private Animator _animator;
+
     [SerializeField] private float _rotateSpeed;
     [SerializeField] private int _moveSpeed;
     [SerializeField] private float _stoppingDistance;
     [SerializeField] private int _maxMoveDistance;
 
     private Vector3 _targetPosition;
+
+    public event EventHandler OnStartMoving;
+    public event EventHandler OnStopMoving;
 
     protected override void Awake()
     {
@@ -32,10 +35,7 @@ public class MoveAction : BaseAction
         }
 
         if (Vector3.Distance(transform.position, _targetPosition) > _stoppingDistance)
-        {
-            //activation de l'animation
-            _animator.SetBool("isWalking", true);
-
+        {           
             //Déplacement en lui même
             transform.position += _moveDirection * _moveSpeed * Time.deltaTime; 
         }
@@ -43,9 +43,8 @@ public class MoveAction : BaseAction
         {
 
             //Une fois l'unit arrivée à destination
-            _animator.SetBool("isWalking", false);
-            _isActive = false;
-            _onActionComplete();
+            Actioncomplete();
+            OnStopMoving?.Invoke(this, EventArgs.Empty);
         }
 
         //Rotation de l'unit
@@ -56,9 +55,10 @@ public class MoveAction : BaseAction
     //Fait bouger l'unit vers la position de la souris
     public override void TakeAction(GridPosition gridPosition, Action _onActionComplete)
     {
-        this._onActionComplete = _onActionComplete;
+        ActionStart(_onActionComplete);
         this._targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
-        _isActive = true;
+
+        OnStartMoving?.Invoke(this, EventArgs.Empty);
     }
 
 

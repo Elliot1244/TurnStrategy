@@ -31,18 +31,15 @@ public class SpinAction : BaseAction
         if (_totalSpinAmount >= 360f)
         {
 
-            _isActive = false;
-
-            //Appel du delegate une fois la rotation finie
-            _onActionComplete();
+            //Appel d'une fonction une fois la rotation finie
+            Actioncomplete();
         }
     }
 
     //Fonction active un spin de l'unit et reset le _totalSptinAmount
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        this._onActionComplete = onActionComplete;
-        _isActive = true;
+        ActionStart(onActionComplete);
         _totalSpinAmount = 0f;
     }
 

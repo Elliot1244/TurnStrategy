@@ -6,6 +6,14 @@ using UnityEngine;
 public class ShootAction : BaseAction
 {
 
+    public event EventHandler<OnShootEventArgs> OnShoot;
+
+    public class OnShootEventArgs : EventArgs
+    {
+        public Unit targetUnit;
+        public Unit shootingUnit;
+    }
+
     private enum State
     {
         Aiming,
@@ -69,8 +77,7 @@ public class ShootAction : BaseAction
                     _stateTimer = _coolOfftateTimer;
                 break;
             case State.Cooloff:
-                    _isActive = false;
-                    _onActionComplete();
+                Actioncomplete();
                 break;
         }
     }
@@ -136,9 +143,8 @@ public class ShootAction : BaseAction
     }
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
-    {
-        this._onActionComplete = onActionComplete;
-        _isActive = true;
+    {   
+        ActionStart(onActionComplete);
 
         //On récupère la case de l'unit que l'on vise
         _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
@@ -154,6 +160,11 @@ public class ShootAction : BaseAction
 
     private void Shoot()
     {
+        OnShoot?.Invoke(this, new OnShootEventArgs
+        {
+            targetUnit = _targetUnit,
+            shootingUnit = _unit
+        }) ;
         _targetUnit.Damage();
     }
 }
