@@ -45,7 +45,6 @@ public class UnitAnimator : MonoBehaviour
         Vector3 targetUnitShootAtPosition = e.targetUnit.GetWorldPosition();
         targetUnitShootAtPosition.y = _spawner.position.y;
         bulletProjectile.SetUp(targetUnitShootAtPosition);
-
-
     }
 }
+
