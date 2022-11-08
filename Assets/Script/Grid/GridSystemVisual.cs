@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GridSystemVisual : MonoBehaviour
 {
@@ -46,12 +47,17 @@ public class GridSystemVisual : MonoBehaviour
                 _gridSystemVisualArray[x, z] = gridSystemVisualSingleTransform.GetComponent<GridSystemVisualSingle>();
             }
         }
-    }
 
-    private void Update()
-    {
+        //On s'abonne à l'event du changement d'action
+        UnitActionSystem.Instance.OnSelectedActionChanged += UnitActionSystem_OnSelectedActionChanged;
+
+        //On s'abonne à l'event du mouvement d'une unit
+        LevelGrid.Instance.OnAnyUnitMovedGridPosition += LevelGrid_OnAnyUnitMovedGridPosition;
+
         UpdateGrideVisual();
     }
+
+  
 
     public void HideAllGridPosition()
     {
@@ -86,5 +92,18 @@ public class GridSystemVisual : MonoBehaviour
         ShowGridPositionList(
           selectedAction.GetValidActionGridPosition()
         );
+    }
+
+
+    //Quand l'action de l'unit change
+    private void UnitActionSystem_OnSelectedActionChanged(object sender, EventArgs e)
+    {
+        UpdateGrideVisual();
+    }
+
+    //Quand une unit bouge
+    private void LevelGrid_OnAnyUnitMovedGridPosition(object sender, EventArgs e)
+    {
+        UpdateGrideVisual();
     }
 }

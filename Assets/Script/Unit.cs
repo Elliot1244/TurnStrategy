@@ -73,6 +73,8 @@ public class Unit : MonoBehaviour
        return _baseActionArray;
     }
 
+
+    //Récupère la position de l'unit
     public Vector3 GetWorldPosition()
     {
         return transform.position;

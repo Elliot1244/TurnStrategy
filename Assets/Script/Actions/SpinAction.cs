@@ -39,8 +39,9 @@ public class SpinAction : BaseAction
     //Fonction active un spin de l'unit et reset le _totalSptinAmount
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        ActionStart(onActionComplete);
         _totalSpinAmount = 0f;
+
+        ActionStart(onActionComplete);
     }
 
     public override string GetActionName()

@@ -5,6 +5,10 @@ using System;
 
 public  abstract class BaseAction : MonoBehaviour
 {
+    public static event  EventHandler OnAnyActionStart;
+
+    public static event EventHandler OnAnyActionEnd;
+
     protected Unit _unit;
     protected bool _isActive;
 
@@ -42,11 +46,22 @@ public  abstract class BaseAction : MonoBehaviour
     {
         _isActive = true;
         _onActionComplete = onActionComplete;
+
+        OnAnyActionStart?.Invoke(this, EventArgs.Empty);
     }
 
     protected void Actioncomplete()
     {
         _isActive = false;
         _onActionComplete();
+
+        OnAnyActionEnd?.Invoke(this, EventArgs.Empty);
+    }
+
+
+    //Récupère l'unit qui fait l'action
+    public Unit GetUnit()
+    {
+        return _unit;
     }
 }

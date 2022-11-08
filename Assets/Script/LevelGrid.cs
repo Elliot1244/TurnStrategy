@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class LevelGrid : MonoBehaviour
 {
+    public event EventHandler OnAnyUnitMovedGridPosition;
+
     public static LevelGrid Instance { get; private set; }
 
     [SerializeField] private Transform _gridDebugObjectPrefab;
@@ -76,6 +79,9 @@ public class LevelGrid : MonoBehaviour
 
         //On récupère le nouvel emplacement de l'unit et l'unit elle même
         AddUnitAtGridPosition(toGridPosition, unit);
+
+        //On déclanche l'event dès qu'une unit bouge sur la grille
+        OnAnyUnitMovedGridPosition?.Invoke(this, EventArgs.Empty);
     }
 
     //Si la position de la grille est déjà occupée par une unit

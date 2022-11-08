@@ -144,7 +144,7 @@ public class ShootAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {   
-        ActionStart(onActionComplete);
+        
 
         //On récupère la case de l'unit que l'on vise
         _targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
@@ -156,6 +156,8 @@ public class ShootAction : BaseAction
         _stateTimer = aimingStateTime;
 
         _canShootBullet = true;
+
+        ActionStart(onActionComplete);
     }
 
     private void Shoot()
@@ -166,5 +168,12 @@ public class ShootAction : BaseAction
             shootingUnit = _unit
         }) ;
         _targetUnit.Damage(40);
+    }
+
+
+    //Récupère la cible du tir
+    public Unit GetTargetUnit()
+    {
+        return _targetUnit;
     }
 }

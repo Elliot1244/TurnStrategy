@@ -28,8 +28,11 @@ public class MoveAction : BaseAction
     {
         //Direction de déplacement de l'unit
         Vector3 _moveDirection = (_targetPosition - transform.position).normalized;
+        //Rotation de l'unit
+        transform.forward = Vector3.Lerp(transform.forward, _moveDirection, Time.deltaTime * _rotateSpeed);
+        transform.forward = new Vector3(transform.forward.x, 0, transform.forward.z);
 
-        if(!_isActive)
+        if (!_isActive)
         {
             return;
         }
@@ -41,26 +44,22 @@ public class MoveAction : BaseAction
         }
         else
         {
-
             //Une fois l'unit arrivée à destination
             Actioncomplete();
             OnStopMoving?.Invoke(this, EventArgs.Empty);
         }
-
-        //Rotation de l'unit
-        transform.forward = Vector3.Lerp(transform.forward, _moveDirection, Time.deltaTime * _rotateSpeed);
     }
 
 
     //Fait bouger l'unit vers la position de la souris
     public override void TakeAction(GridPosition gridPosition, Action _onActionComplete)
     {
-        ActionStart(_onActionComplete);
         this._targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
 
         OnStartMoving?.Invoke(this, EventArgs.Empty);
-    }
 
+        ActionStart(_onActionComplete);
+    }
 
     //Récupère une liste de gridposition sur lesquelles on peut bouger
     public override List<GridPosition> GetValidActionGridPosition()
@@ -100,7 +99,6 @@ public class MoveAction : BaseAction
                 {
                     continue;
                 }
-
 
                 validGridPosition.Add(testGridPosition);
             }
