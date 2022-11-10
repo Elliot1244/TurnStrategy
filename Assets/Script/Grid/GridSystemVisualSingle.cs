@@ -8,9 +8,10 @@ public class GridSystemVisualSingle : MonoBehaviour
 
 
     //Fonctions qui montrent ou cachent les zones de déplacement possible
-    public void Show()
+    public void Show(Material material)
     {
         _meshRenderer.enabled = true;
+        _meshRenderer.material = material;
     }
 
     public void Hide()

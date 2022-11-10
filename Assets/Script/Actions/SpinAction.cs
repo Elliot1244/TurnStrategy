@@ -64,6 +64,15 @@ public class SpinAction : BaseAction
     //Fonction qui modifie le coût de l'action spin grâce à l'override
     public override int GetActionPointsCost()
     {
-        return 2;
+        return 1;
+    }
+
+    public override EnemyAction GetEnemyAction(GridPosition gridPosition)
+    {
+        return new EnemyAction
+        {
+            _gridPosition = gridPosition,
+            _actionValue = 0,
+        };
     }
 }

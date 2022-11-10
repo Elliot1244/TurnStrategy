@@ -112,9 +112,14 @@ public class MoveAction : BaseAction
         return "Move";
     }
 
-   /* public virtual int GetActionPointsCost()
+    public override EnemyAction GetEnemyAction(GridPosition gridPosition)
     {
-        return 1;
-    }*/
+        int targetCountAtGridPosition = _unit.GetShootAction().GetTargetCountAtPosition(gridPosition);
 
+        return new EnemyAction
+        {
+            _gridPosition = gridPosition,
+            _actionValue = targetCountAtGridPosition * 10,
+        };
+    }
 }

@@ -83,20 +83,21 @@ public class UnitActionSystem : MonoBehaviour
 
 
             //Si l'action choisie est sur une position valide de la grille
-            if(_selectedAction.IsValidActionGridPosition(mouseGridPosition))
+            if(!_selectedAction.IsValidActionGridPosition(mouseGridPosition))
             {
-
-                //L'unit essaye de dépenser les points d'action
-                if(_selectedUnit.TrySpendActionPoints(_selectedAction))
-                {
-                    SetBusy();
-                    _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
-
-
-                    //Trigger l'event OnActionStarted
-                    OnActionStarted?.Invoke(this, EventArgs.Empty);
-                } 
+                return;
             }
+            //L'unit essaye de dépenser les points d'action
+            if (!_selectedUnit.TrySpendActionPoints(_selectedAction))
+            {
+                return;
+            }
+            SetBusy();
+            _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+
+
+            //Trigger l'event OnActionStarted
+            OnActionStarted?.Invoke(this, EventArgs.Empty);
         }
     }
 

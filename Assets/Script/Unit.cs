@@ -11,10 +11,13 @@ public class Unit : MonoBehaviour
     [SerializeField] private bool _isEnemy;
 
     public static event EventHandler OnAnyActionPointChanged;
+    public static event EventHandler OnAnyUnitSpawned;
+    public static event EventHandler OnAnyUnitDead;
 
     private GridPosition _gridPosition;
     private MoveAction _moveAction;
     private SpinAction _spinAction;
+    private ShootAction _shotAction;
     private HealthSystem _healthSystem;
     private BaseAction[] _baseActionArray;
     private int _actionPoints = ACTION_POINT_MAX;
@@ -24,6 +27,7 @@ public class Unit : MonoBehaviour
     {
         _moveAction = GetComponent<MoveAction>();
         _spinAction = GetComponent<SpinAction>();
+        _shotAction = GetComponent<ShootAction>();
         _baseActionArray = GetComponents<BaseAction>();
         _healthSystem = GetComponent<HealthSystem>();
     }
@@ -38,6 +42,8 @@ public class Unit : MonoBehaviour
         TurnSystem.Instance.OnTurnChanged += TurnSystem_OnTurnChanged;
 
         _healthSystem.OnDead += HealthSystem_OnDead;
+
+        OnAnyUnitSpawned?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update()
@@ -48,8 +54,10 @@ public class Unit : MonoBehaviour
         //(Opérateur non valide de base, voir Grid Position pour la création des opérateurs de la struct GridPosition)
         if(_newGridPosition != _gridPosition)
         {
-            LevelGrid.Instance.UnitMovedGridPosition(this, _gridPosition, _newGridPosition);
+            GridPosition oldGridPosition = _gridPosition;
             _gridPosition = _newGridPosition;
+
+            LevelGrid.Instance.UnitMovedGridPosition(this, oldGridPosition, _newGridPosition);
         }
     }
 
@@ -61,6 +69,11 @@ public class Unit : MonoBehaviour
     public SpinAction GetSpinAction()
     {
         return _spinAction;
+    }
+
+    public ShootAction GetShootAction()
+    {
+        return _shotAction;
     }
 
     public GridPosition GetGridPosition()
@@ -148,10 +161,16 @@ public class Unit : MonoBehaviour
     //Méthode inscrite à l'évènement OnDead, qui détruit le gamobject sans point de vie restant 
     private void HealthSystem_OnDead(object sender, EventArgs e)
     {
-
         //Supprime la coloration de la case indiquant qu'il y a quelqu'un dessus
         LevelGrid.Instance.RemoveUnitAtGridPosition(_gridPosition, this);
 
         Destroy(gameObject);
+
+        OnAnyUnitDead?.Invoke(this, EventArgs.Empty);
+    }
+
+    public float GetHealthNormalized()
+    {
+        return _healthSystem.GetHealthNormalized();
     }
 }

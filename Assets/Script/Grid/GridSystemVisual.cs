@@ -10,8 +10,26 @@ public class GridSystemVisual : MonoBehaviour
     public static GridSystemVisual Instance { get; private set; }
 
     [SerializeField] private Transform _gridSystemVisualPrefab;
+    [SerializeField] private List<GridVisualTypeMaterial> _gridVisualTypeMaterialList;
 
     private GridSystemVisualSingle[,] _gridSystemVisualArray;
+
+    [Serializable]
+    public struct GridVisualTypeMaterial
+    {
+        public GridVisualType _gridVisualType;
+        public Material _material;
+    }
+
+
+    public enum GridVisualType
+    {
+        White,
+        Blue,
+        Red,
+        RedSoft,
+        Yellow
+    }
 
     private void Awake()
     {
@@ -70,11 +88,39 @@ public class GridSystemVisual : MonoBehaviour
         }
     }
 
-    public void ShowGridPositionList(List<GridPosition> gridPositionList)
+    private void ShowGridPositionRange(GridPosition gridPosition, int range, GridVisualType gridVisualType)
+    {
+        List<GridPosition> gridPositionList = new List<GridPosition>();
+
+        for(int x = -range; x <= range; x++ )
+        {
+            for(int z = -range; z <= range; z++ )
+            {
+                GridPosition testGridPosition = gridPosition + new GridPosition(x, z);
+
+                //Si la position récupérée n'est pas valide sur la grille alors on continue l'itération de la boucle sans prendre en compte la valeur hors grille
+                if (!LevelGrid.Instance.IsValidgridPosition(testGridPosition))
+                {
+                    continue;
+                }
+
+                //Si la distance de test est supérieure à la distance max de shoot possible, on ne prend pas en compte la case
+                int _testDistance = Mathf.Abs(x) + Mathf.Abs(z);
+                if (_testDistance > range)
+                {
+                    continue;
+                }
+                gridPositionList.Add(testGridPosition);
+            }
+        }
+        ShowGridPositionList(gridPositionList, gridVisualType);
+    }
+
+    public void ShowGridPositionList(List<GridPosition> gridPositionList, GridVisualType gridVisualType)
     {
         foreach(GridPosition gridPosition in gridPositionList)
         {
-            _gridSystemVisualArray[gridPosition.x, gridPosition.z].Show();
+            _gridSystemVisualArray[gridPosition.x, gridPosition.z].Show(GetGridVisualTypeMaterial(gridVisualType));
         }
     }
 
@@ -85,13 +131,32 @@ public class GridSystemVisual : MonoBehaviour
         //On commence par cacher toutes les cases
         HideAllGridPosition();
 
+
+        Unit selectdUnit = UnitActionSystem.Instance.GetSelectedUnit();
         //Récupère l'unit sélectionnée via UnitActionSystem et GetSelectedUnit
         BaseAction selectedAction = UnitActionSystem.Instance.GetSelectedAction();
 
+
+        GridVisualType gridVisualType;
+        //Change la couleur des cases selon l'action sélectionnée
+        switch(selectedAction)
+        {
+            default: 
+            case MoveAction moveAction:
+                gridVisualType = GridVisualType.White;
+                break;
+            case SpinAction spinAction:
+                gridVisualType = GridVisualType.Yellow;
+                break;
+            case ShootAction shootAction:
+                gridVisualType = GridVisualType.Red;
+
+                ShowGridPositionRange(selectdUnit.GetGridPosition(), shootAction.GetMaxShootAction(), GridVisualType.RedSoft);
+                break;
+        }
+
         //On affiche les cases dispos pour l'unit sélectionnée
-        ShowGridPositionList(
-          selectedAction.GetValidActionGridPosition()
-        );
+        ShowGridPositionList(selectedAction.GetValidActionGridPosition(), gridVisualType);
     }
 
 
@@ -105,5 +170,17 @@ public class GridSystemVisual : MonoBehaviour
     private void LevelGrid_OnAnyUnitMovedGridPosition(object sender, EventArgs e)
     {
         UpdateGrideVisual();
+    }
+
+    private Material GetGridVisualTypeMaterial(GridVisualType gridVisualType)
+    {
+        foreach(GridVisualTypeMaterial gridVisualTypeMaterial in _gridVisualTypeMaterialList)
+        {
+            if(gridVisualTypeMaterial._gridVisualType == gridVisualType)
+            {
+                return gridVisualTypeMaterial._material;
+            }
+        }
+        return null;
     }
 }
