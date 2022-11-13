@@ -11,7 +11,7 @@ public class LevelGrid : MonoBehaviour
 
     [SerializeField] private Transform _gridDebugObjectPrefab;
 
-    private GridSystem _gridSystem;
+    private GridSystem<GridObject> _gridSystem;
     private void Awake()
     {
         //S'il y a plus qu'une grille active à l'awake
@@ -24,7 +24,7 @@ public class LevelGrid : MonoBehaviour
         Instance = this;
 
         //Appel et Initailisation de la grille de 10 * 10
-        _gridSystem = new GridSystem(10, 10, 2f);
+        _gridSystem = new GridSystem<GridObject>(10, 10, 2f, (GridSystem<GridObject> g,GridPosition gridPosition) => new GridObject(g, gridPosition));
         _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
     }
 

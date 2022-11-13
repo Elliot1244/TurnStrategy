@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class GridSystem
+public class GridSystem<TGridObject>
 {
 
     private int _width;
@@ -10,14 +11,14 @@ public class GridSystem
     private float _cellSize;
 
     //La virgule indique un tableau à deux dimensions
-    private GridObject[,] _gridObjectArray;
-    public GridSystem(int width, int height, float cellSize)
+    private TGridObject[,] _gridObjectArray;
+    public GridSystem(int width, int height, float cellSize, Func<GridSystem<TGridObject>, GridPosition, TGridObject> cretaeGridObject)
     {
         this._width = width;
         this._height = height;
         this._cellSize = cellSize;  
 
-        _gridObjectArray = new GridObject[width, height];
+        _gridObjectArray = new TGridObject[width, height];
 
 
         //Construit la grille selon les valeurs données en Ligne 8 à 10
@@ -27,7 +28,7 @@ public class GridSystem
             {
                 GridPosition gridPosition = new GridPosition(x, z);
                 //new GridObject(this, gridPosition);
-                _gridObjectArray[x, z] = new GridObject(this, gridPosition);
+                _gridObjectArray[x, z] = cretaeGridObject(this, gridPosition);
             }
         }
     }
@@ -56,12 +57,12 @@ public class GridSystem
 
                 Transform debugTransform = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
                 GridDebugObject gridDebugObject = debugTransform.GetComponent<GridDebugObject>();
-                gridDebugObject.SetGridObject(GetGridObject(gridPosition));
+                gridDebugObject.SetGridObject(GetGridObject(gridPosition) as GridObject);
             }
         }
     }
 
-    public GridObject GetGridObject(GridPosition gridPosition)
+    public TGridObject GetGridObject(GridPosition gridPosition)
     {
         return _gridObjectArray[gridPosition.x, gridPosition.z];
     }

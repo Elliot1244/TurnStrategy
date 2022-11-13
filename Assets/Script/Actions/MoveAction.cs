@@ -114,7 +114,7 @@ public class MoveAction : BaseAction
 
     public override EnemyAction GetEnemyAction(GridPosition gridPosition)
     {
-        int targetCountAtGridPosition = _unit.GetShootAction().GetTargetCountAtPosition(gridPosition);
+        int targetCountAtGridPosition = _unit.GetAction<ShootAction>().GetTargetCountAtPosition(gridPosition);
 
         return new EnemyAction
         {

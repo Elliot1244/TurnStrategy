@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class GridObject
 {
-    private GridSystem _gridSystem;
+    private GridSystem<GridObject> _gridSystem;
     private GridPosition _gridPosition;
 
     //sans liste d'unit, problème si deux units se croisent sur la même case
     private List<Unit> _unitList;
 
-    public GridObject(GridSystem gridSystem, GridPosition gridPosition)
+    public GridObject(GridSystem<GridObject> gridSystem, GridPosition gridPosition)
     {
         this._gridSystem = gridSystem;
         this._gridPosition = gridPosition;
