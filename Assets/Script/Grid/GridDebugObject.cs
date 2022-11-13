@@ -8,13 +8,13 @@ public class GridDebugObject : MonoBehaviour
 
     [SerializeField] private TextMeshPro _textMeshPro;
 
-    private GridObject _gridObject;
-    public void SetGridObject(GridObject gridObject)
+    private object _gridObject;
+    public virtual void SetGridObject(object gridObject)
     {
         this._gridObject = gridObject;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         _textMeshPro.text = _gridObject.ToString();
     }

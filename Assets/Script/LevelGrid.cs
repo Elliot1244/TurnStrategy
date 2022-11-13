@@ -25,7 +25,7 @@ public class LevelGrid : MonoBehaviour
 
         //Appel et Initailisation de la grille de 10 * 10
         _gridSystem = new GridSystem<GridObject>(10, 10, 2f, (GridSystem<GridObject> g,GridPosition gridPosition) => new GridObject(g, gridPosition));
-        _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        //_gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
     }
 
     public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)
