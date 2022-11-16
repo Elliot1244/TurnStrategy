@@ -10,6 +10,9 @@ public class LevelGrid : MonoBehaviour
     public static LevelGrid Instance { get; private set; }
 
     [SerializeField] private Transform _gridDebugObjectPrefab;
+    [SerializeField] private int _width;
+    [SerializeField] private int _height;
+    [SerializeField] private float _cellSize;
 
     private GridSystem<GridObject> _gridSystem;
     private void Awake()
@@ -24,8 +27,13 @@ public class LevelGrid : MonoBehaviour
         Instance = this;
 
         //Appel et Initailisation de la grille de 10 * 10
-        _gridSystem = new GridSystem<GridObject>(10, 10, 2f, (GridSystem<GridObject> g,GridPosition gridPosition) => new GridObject(g, gridPosition));
+        _gridSystem = new GridSystem<GridObject>(_width, _height, _cellSize, (GridSystem<GridObject> g,GridPosition gridPosition) => new GridObject(g, gridPosition));
         //_gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+    }
+
+    private void Start()
+    {
+        Pathfinding.Instance.SetUp(_width, _height, _cellSize);
     }
 
     public void AddUnitAtGridPosition(GridPosition gridPosition, Unit unit)

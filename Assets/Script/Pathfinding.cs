@@ -11,10 +11,11 @@ public class Pathfinding : MonoBehaviour
 
     private int _width;
     private int _height;
-    private float _cellSize;
+    private float _cellSize; 
     private GridSystem<PathNode> _gridSystem;
 
     [SerializeField] Transform _gridDebugObjectPrefab;
+    [SerializeField] private LayerMask _obstacleLayerMask;
 
     private void Awake()
     {
@@ -27,8 +28,33 @@ public class Pathfinding : MonoBehaviour
             }
             Instance = this;
 
-        _gridSystem = new GridSystem<PathNode>(10, 10, 2f, (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
+       
+    }
+
+    public void SetUp(int width, int height, float cellSize)
+    {
+        this._width = width;
+        this._height = height;
+        this._cellSize = cellSize;
+
+        _gridSystem = new GridSystem<PathNode>(_width, _height, _cellSize, (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
         _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+
+
+        //On défini les nodes qui ne sont pas marchable en émettant un raycast qui va toucher les obstacles uniquement
+        for(int x = 0; x < _width; x++)
+        {
+            for(int z = 0; z < _height; z++)
+            {
+                GridPosition gridPosition = new GridPosition(x, z);
+                Vector3 worldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+                float offsetRaycastDistance = 5f;
+                if(Physics.Raycast(worldPosition + Vector3.down * offsetRaycastDistance, Vector3.up, offsetRaycastDistance * 2, _obstacleLayerMask))
+                {
+                    GetNode(x, z).SetIsWalkable(false);
+                }
+            }
+        }
     }
 
     //Récupère une liste de deux gridPosition avec la position de début et celle de fin
@@ -82,6 +108,13 @@ public class Pathfinding : MonoBehaviour
             {
                 if(closedList.Contains(neighbourNode))
                 {
+                    continue;
+                }
+
+                //Si le node n'est pas walkable, on le met dans la liste des nodes déjà recherchés
+                if(!neighbourNode.IsWakable())
+                {
+                    closedList.Add(neighbourNode);
                     continue;
                 }
 
