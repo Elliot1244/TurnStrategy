@@ -11,24 +11,26 @@ public class Pathfinding : MonoBehaviour
 
     private int _width;
     private int _height;
-    private float _cellSize; 
+    private float _cellSize;
     private GridSystem<PathNode> _gridSystem;
 
     [SerializeField] Transform _gridDebugObjectPrefab;
+    [SerializeField] bool _showDebug;
+    [SerializeField] Transform _root;
     [SerializeField] private LayerMask _obstacleLayerMask;
 
     private void Awake()
     {
-            //Vérifie qu'il n'y ait qu'une instance sinon destruction
-            if (Instance != null)
-            {
-                Debug.LogError("More than one PathFinding" + transform + " - " + Instance);
-                DestroyImmediate(gameObject);
-                return;
-            }
-            Instance = this;
+        //Vérifie qu'il n'y ait qu'une instance sinon destruction
+        if (Instance != null)
+        {
+            Debug.LogError("More than one PathFinding" + transform + " - " + Instance);
+            DestroyImmediate(gameObject);
+            return;
+        }
+        Instance = this;
 
-       
+
     }
 
     public void SetUp(int width, int height, float cellSize)
@@ -37,19 +39,22 @@ public class Pathfinding : MonoBehaviour
         this._height = height;
         this._cellSize = cellSize;
 
-        _gridSystem = new GridSystem<PathNode>(_width, _height, _cellSize, (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition));
-        _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
-
+        _gridSystem = new GridSystem<PathNode>(_width, _height, _cellSize, 
+            (GridSystem<PathNode> g, GridPosition gridPosition) => new PathNode(gridPosition), _root);
+        if (_showDebug)
+        {
+            _gridSystem.CreateDebugObjects(_gridDebugObjectPrefab);
+        }
 
         //On défini les nodes qui ne sont pas marchable en émettant un raycast qui va toucher les obstacles uniquement
-        for(int x = 0; x < _width; x++)
+        for (int x = 0; x < _width; x++)
         {
-            for(int z = 0; z < _height; z++)
+            for (int z = 0; z < _height; z++)
             {
                 GridPosition gridPosition = new GridPosition(x, z);
                 Vector3 worldPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
                 float offsetRaycastDistance = 5f;
-                if(Physics.Raycast(worldPosition + Vector3.down * offsetRaycastDistance, Vector3.up, offsetRaycastDistance * 2, _obstacleLayerMask))
+                if (Physics.Raycast(worldPosition + Vector3.down * offsetRaycastDistance, Vector3.up, offsetRaycastDistance * 2, _obstacleLayerMask))
                 {
                     GetNode(x, z).SetIsWalkable(false);
                 }
@@ -70,9 +75,9 @@ public class Pathfinding : MonoBehaviour
         PathNode endNode = _gridSystem.GetGridObject(endGridPosition);
         openList.Add(startNode);
 
-        for(int x = 0; x < _gridSystem.GetWidth(); x++)
+        for (int x = 0; x < _gridSystem.GetWidth(); x++)
         {
-            for(int z = 0; z < _gridSystem.GetHeight(); z++)
+            for (int z = 0; z < _gridSystem.GetHeight(); z++)
             {
                 GridPosition gridPosition = new GridPosition(x, z);
                 PathNode pathNode = _gridSystem.GetGridObject(gridPosition);
@@ -89,13 +94,13 @@ public class Pathfinding : MonoBehaviour
         startNode.CalculateFcost();
 
         //Tant que l'on a des nodes à chercher
-        while(openList.Count > 0)
+        while (openList.Count > 0)
         {
             //On prend le node actuel et on le met en premier dans la liste des nodes que l'on peut rechercher
             PathNode currentNode = GetLowestFCostPathNode(openList);
 
 
-            if(currentNode == endNode)
+            if (currentNode == endNode)
             {
                 //On a fini la recherche des nodes
                 return CalculatePath(endNode);
@@ -104,15 +109,15 @@ public class Pathfinding : MonoBehaviour
             openList.Remove(currentNode);
             closedList.Add(currentNode);
 
-            foreach(PathNode neighbourNode in GetNeighbourgList(currentNode))
+            foreach (PathNode neighbourNode in GetNeighbourgList(currentNode))
             {
-                if(closedList.Contains(neighbourNode))
+                if (closedList.Contains(neighbourNode))
                 {
                     continue;
                 }
 
                 //Si le node n'est pas walkable, on le met dans la liste des nodes déjà recherchés
-                if(!neighbourNode.IsWakable())
+                if (!neighbourNode.IsWakable())
                 {
                     closedList.Add(neighbourNode);
                     continue;
@@ -120,16 +125,16 @@ public class Pathfinding : MonoBehaviour
 
                 int tentativeGCost = currentNode.GetGCost() + CalculateDistance(currentNode.GetGridPosition(), neighbourNode.GetGridPosition());
 
-                if(tentativeGCost < neighbourNode.GetGCost())
+                if (tentativeGCost < neighbourNode.GetGCost())
                 {
                     neighbourNode.SetCameFromPathNode(currentNode);
                     neighbourNode.SetGCost(tentativeGCost);
                     neighbourNode.SetHCost(CalculateDistance(neighbourNode.GetGridPosition(), endGridPosition));
                     neighbourNode.CalculateFcost();
 
-                    if(!openList.Contains(neighbourNode))
+                    if (!openList.Contains(neighbourNode))
                     {
-                      openList.Add(neighbourNode);
+                        openList.Add(neighbourNode);
                     }
                 }
             }
@@ -151,10 +156,10 @@ public class Pathfinding : MonoBehaviour
     private PathNode GetLowestFCostPathNode(List<PathNode> pathNodeList)
     {
         PathNode lowestFCostPathNode = pathNodeList[0];
-        for(int i = 0; i < pathNodeList.Count; i++)
+        for (int i = 0; i < pathNodeList.Count; i++)
         {
             //Si le node que l'on vérifie a un coût F inférieur au node qui a le coût F le moins élevé
-            if(pathNodeList[i].GetFCost() < lowestFCostPathNode.GetFCost())
+            if (pathNodeList[i].GetFCost() < lowestFCostPathNode.GetFCost())
             {
                 //Alors le node que l'on vérifie devient celui avec le coût en F le plus bas
                 lowestFCostPathNode = pathNodeList[i];
@@ -175,26 +180,26 @@ public class Pathfinding : MonoBehaviour
 
         GridPosition gridPosition = currentNode.GetGridPosition();
 
-        if(gridPosition.x - 1 >= 0)
+        if (gridPosition.x - 1 >= 0)
         {
             //Node de gauche
             neighbourgList.Add(GetNode(gridPosition.x - 1, gridPosition.z + 0));
 
-            if(gridPosition.z - 1 >= 0)
+            if (gridPosition.z - 1 >= 0)
             {
                 //Node de gauche bas
                 neighbourgList.Add(GetNode(gridPosition.x - 1, gridPosition.z - 1));
             }
 
-            if(gridPosition.z + 1 < _gridSystem.GetHeight())
+            if (gridPosition.z + 1 < _gridSystem.GetHeight())
             {
                 //Node de gauche haut
                 neighbourgList.Add(GetNode(gridPosition.x - 1, gridPosition.z + 1));
             }
-            
+
         }
 
-        if(gridPosition.x + 1 < _gridSystem.GetWidth())
+        if (gridPosition.x + 1 < _gridSystem.GetWidth())
         {
             //Node de droite
             neighbourgList.Add(GetNode(gridPosition.x + 1, gridPosition.z + 0));
@@ -209,7 +214,7 @@ public class Pathfinding : MonoBehaviour
             {
                 //Node de droite haut
                 neighbourgList.Add(GetNode(gridPosition.x + 1, gridPosition.z + 1));
-            }     
+            }
         }
 
         if (gridPosition.z - 1 >= 0)
@@ -233,7 +238,7 @@ public class Pathfinding : MonoBehaviour
         List<PathNode> pathNodeList = new List<PathNode>();
         pathNodeList.Add(endNode);
         PathNode currentNode = endNode;
-        while(currentNode.GetCameFromPathNode() != null)
+        while (currentNode.GetCameFromPathNode() != null)
         {
             pathNodeList.Add(currentNode.GetCameFromPathNode());
             currentNode = currentNode.GetCameFromPathNode();
@@ -242,12 +247,19 @@ public class Pathfinding : MonoBehaviour
         pathNodeList.Reverse();
 
         List<GridPosition> gridPositionList = new List<GridPosition>();
-        foreach(PathNode pathNode in pathNodeList)
+        foreach (PathNode pathNode in pathNodeList)
         {
             gridPositionList.Add(pathNode.GetGridPosition());
         }
 
         return gridPositionList;
+    }
+
+
+    //Renvoi une casse sur la grille qui est walkable
+    public bool IsWalkableGridPosition(GridPosition gridPosition)
+    {
+        return _gridSystem.GetGridObject(gridPosition).IsWakable();
     }
 
 }

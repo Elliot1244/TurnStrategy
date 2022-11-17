@@ -11,42 +11,42 @@ public class MoveAction : BaseAction
     [SerializeField] private float _stoppingDistance;
     [SerializeField] private int _maxMoveDistance;
 
-    private Vector3 _targetPosition;
+    private List<Vector3> _positionList;
+    private int _currentPositionIndex;
 
     public event EventHandler OnStartMoving;
     public event EventHandler OnStopMoving;
 
-    protected override void Awake()
-    {
-
-        base.Awake();
-        //A l'initialisation, le point d'arrivée est la position de l'unit
-        _targetPosition = transform.position;
-    }
 
     private void Update()
     {
-        //Direction de déplacement de l'unit
-        Vector3 _moveDirection = (_targetPosition - transform.position).normalized;
-        //Rotation de l'unit
-        transform.forward = Vector3.Lerp(transform.forward, _moveDirection, Time.deltaTime * _rotateSpeed);
-        transform.forward = new Vector3(transform.forward.x, 0, transform.forward.z);
-
-        if (!_isActive)
+        if(!_isActive)
         {
             return;
         }
 
-        if (Vector3.Distance(transform.position, _targetPosition) > _stoppingDistance)
+        Vector3 targetPosition = _positionList[_currentPositionIndex];
+        //Direction de déplacement de l'unit
+        Vector3 _moveDirection = (targetPosition - transform.position).normalized;
+        //Rotation de l'unit
+        transform.forward = Vector3.Lerp(transform.forward, _moveDirection, Time.deltaTime * _rotateSpeed);
+        transform.forward = new Vector3(transform.forward.x, 0, transform.forward.z);
+
+
+        if (Vector3.Distance(transform.position, targetPosition) > _stoppingDistance)
         {           
             //Déplacement en lui même
             transform.position += _moveDirection * _moveSpeed * Time.deltaTime; 
         }
         else
         {
-            //Une fois l'unit arrivée à destination
-            Actioncomplete();
-            OnStopMoving?.Invoke(this, EventArgs.Empty);
+            _currentPositionIndex++;
+            if(_currentPositionIndex >= _positionList.Count)
+            {
+                //Une fois l'unit arrivée à destination
+                Actioncomplete();
+                OnStopMoving?.Invoke(this, EventArgs.Empty);
+            } 
         }
     }
 
@@ -54,7 +54,16 @@ public class MoveAction : BaseAction
     //Fait bouger l'unit vers la position de la souris
     public override void TakeAction(GridPosition gridPosition, Action _onActionComplete)
     {
-        this._targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
+        List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath(_unit.GetGridPosition(), gridPosition);
+
+        _currentPositionIndex = 0;
+        _positionList = new List<Vector3>();
+
+        foreach(GridPosition pathGridPosition in pathGridPositionList)
+        {
+            _positionList.Add(LevelGrid.Instance.GetWorldPosition(pathGridPosition));
+        }
+        
 
         OnStartMoving?.Invoke(this, EventArgs.Empty);
 
@@ -96,6 +105,12 @@ public class MoveAction : BaseAction
 
                 //Si la position sur la grille est occupée par une autre unit, on ne prend pas en compte cette position
                 if (LevelGrid.Instance.HasAnyUnitOnGridPosition(testGridPosition))
+                {
+                    continue;
+                }
+
+                //Si la position n'est pas walkable, on ne la prend pas en compte
+              if(!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
                 {
                     continue;
                 }

@@ -16,6 +16,6 @@ public class GridDebugObject : MonoBehaviour
 
     protected virtual void Update()
     {
-        _textMeshPro.text = _gridObject.ToString();
+        _textMeshPro.text = _gridObject?.ToString() ?? "";
     }
 }

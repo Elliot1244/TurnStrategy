@@ -14,7 +14,7 @@ public class LookAtCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(_invert)
+        /*if (_invert)
         {
             Vector3 dirToCam = (_camera.position - transform.position).normalized;
             transform.LookAt(transform.position + dirToCam * -1);
@@ -22,7 +22,10 @@ public class LookAtCamera : MonoBehaviour
         else
         {
             transform.LookAt(_camera);
-        }
-        
+        }*/
+
+        transform.LookAt(transform.position + _camera.transform.rotation * Vector3.forward,
+        _camera.transform.rotation * Vector3.up);
+
     }
 }

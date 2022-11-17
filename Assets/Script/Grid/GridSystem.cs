@@ -9,14 +9,19 @@ public class GridSystem<TGridObject>
     private int _width;
     private int _height;
     private float _cellSize;
+    Transform _root;
+
 
     //La virgule indique un tableau à deux dimensions
     private TGridObject[,] _gridObjectArray;
-    public GridSystem(int width, int height, float cellSize, Func<GridSystem<TGridObject>, GridPosition, TGridObject> cretaeGridObject)
+    public GridSystem(int width, int height, float cellSize, 
+        Func<GridSystem<TGridObject>, GridPosition, TGridObject> cretaeGridObject,
+        Transform root=null)
     {
         this._width = width;
         this._height = height;
-        this._cellSize = cellSize;  
+        this._cellSize = cellSize;
+        _root = root;
 
         _gridObjectArray = new TGridObject[width, height];
 
@@ -55,7 +60,7 @@ public class GridSystem<TGridObject>
             {
                 GridPosition gridPosition = new GridPosition(x, z);
 
-                Transform debugTransform = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
+                Transform debugTransform = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity, _root);
                 GridDebugObject gridDebugObject = debugTransform.GetComponent<GridDebugObject>();
                 gridDebugObject.SetGridObject(GetGridObject(gridPosition));
             }
