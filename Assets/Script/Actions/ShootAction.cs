@@ -7,6 +7,7 @@ public class ShootAction : BaseAction
 {
 
     public event EventHandler<OnShootEventArgs> OnShoot;
+    public static event EventHandler<OnShootEventArgs> OnAnyShoot;
 
     public class OnShootEventArgs : EventArgs
     {
@@ -186,6 +187,13 @@ public class ShootAction : BaseAction
 
     private void Shoot()
     {
+        OnAnyShoot?.Invoke(this, new OnShootEventArgs
+        {
+            targetUnit = _targetUnit,
+            shootingUnit = _unit
+        });
+
+
         OnShoot?.Invoke(this, new OnShootEventArgs
         {
             targetUnit = _targetUnit,

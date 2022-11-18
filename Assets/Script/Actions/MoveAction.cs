@@ -143,8 +143,6 @@ public class MoveAction : BaseAction
 
     public override EnemyAction GetEnemyAction(GridPosition gridPosition)
     {
-        (int, string) coucou;
-
         int targetCountAtGridPosition = _unit.GetAction<ShootAction>().GetTargetCountAtPosition(gridPosition);
 
         int canShootWeight = targetCountAtGridPosition * 10;
@@ -156,7 +154,7 @@ public class MoveAction : BaseAction
         return new EnemyAction
         {
             _gridPosition = gridPosition,
-            //_shootWeight = canShootWeight * 100,
+
             _actionValue = canShootWeight + moveCloserWeight,
         };
     }
