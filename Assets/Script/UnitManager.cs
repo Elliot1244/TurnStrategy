@@ -8,7 +8,7 @@ public class UnitManager : MonoBehaviour
     public static UnitManager Instance { get; private set; }
 
     private List<Unit> _unitList;
-    private List<Unit> _friendlyUnitnitList;
+    public List<Unit> _friendlyUnitnitList;
     private List<Unit> _enemyUnitList;
 
     private void Awake()

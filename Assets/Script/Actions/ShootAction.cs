@@ -8,6 +8,7 @@ public class ShootAction : BaseAction
 
     public event EventHandler<OnShootEventArgs> OnShoot;
     public static event EventHandler<OnShootEventArgs> OnAnyShoot;
+    public static event EventHandler<OnShootEventArgs> OnAllyShoot;
 
     public class OnShootEventArgs : EventArgs
     {
@@ -193,6 +194,15 @@ public class ShootAction : BaseAction
             shootingUnit = _unit
         });
 
+        //Si l'unit ciblée apprtient au joueur
+        if (UnitManager.Instance._friendlyUnitnitList.Contains(_targetUnit))
+        {
+            OnAllyShoot?.Invoke(this, new OnShootEventArgs
+            {
+                targetUnit = _targetUnit,
+                shootingUnit = _unit
+            });
+        }
 
         OnShoot?.Invoke(this, new OnShootEventArgs
         {
