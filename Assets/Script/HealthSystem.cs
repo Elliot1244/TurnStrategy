@@ -46,4 +46,6 @@ public class HealthSystem : MonoBehaviour
     {
         return (float)_health / _healthMax;
     }
+
+    public int Health => _health;
 }

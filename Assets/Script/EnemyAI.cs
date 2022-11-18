@@ -113,6 +113,11 @@ public class EnemyAI : MonoBehaviour
                 }
             }
 
+            if (bestEnemyAction._actionValue == 0)
+            {
+                TurnSystem.Instance.NextTurn();
+            }
+
             baseAction.GetBestEnemyAction();
         }
 
@@ -125,5 +130,7 @@ public class EnemyAI : MonoBehaviour
         {
             return false;
         }
+
+        
     }
 }

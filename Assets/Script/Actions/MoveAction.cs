@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class MoveAction : BaseAction
 {
@@ -54,7 +55,7 @@ public class MoveAction : BaseAction
     //Fait bouger l'unit vers la position de la souris
     public override void TakeAction(GridPosition gridPosition, Action _onActionComplete)
     {
-        List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath(_unit.GetGridPosition(), gridPosition);
+        List<GridPosition> pathGridPositionList = Pathfinding.Instance.FindPath(_unit.GetGridPosition(), gridPosition, out int pathLength);
 
         _currentPositionIndex = 0;
         _positionList = new List<Vector3>();
@@ -74,7 +75,6 @@ public class MoveAction : BaseAction
     public override List<GridPosition> GetValidActionGridPosition()
     {
         List<GridPosition> validGridPosition = new List<GridPosition>();
-
 
         //On récupère la position sur la grille de l'unit
         GridPosition unitGridPosition = _unit.GetGridPosition();
@@ -115,6 +115,16 @@ public class MoveAction : BaseAction
                     continue;
                 }
 
+                int pathfindingDistanceMultiplier = 10;
+
+                //Si la case n'est pas à portée de distance de mouvement
+                if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > _maxMoveDistance * pathfindingDistanceMultiplier)
+                {
+                    
+                    continue;
+                }
+
+
                 validGridPosition.Add(testGridPosition);
             }
         }
@@ -127,14 +137,29 @@ public class MoveAction : BaseAction
         return "Move";
     }
 
+    int EstimateDistance(GridPosition a, GridPosition b) => Mathf.Abs(a.x - b.x) + Mathf.Abs(a.z - b.z);
+
+    
+
     public override EnemyAction GetEnemyAction(GridPosition gridPosition)
     {
+        (int, string) coucou;
+
         int targetCountAtGridPosition = _unit.GetAction<ShootAction>().GetTargetCountAtPosition(gridPosition);
+
+        int canShootWeight = targetCountAtGridPosition * 10;
+        int moveCloserWeight = UnitManager.Instance.GetFriendlyUnitList()
+            .Select(i => EstimateDistance(gridPosition, i.GetGridPosition()))
+            .Sum();
+        moveCloserWeight = 10000 / moveCloserWeight;
 
         return new EnemyAction
         {
             _gridPosition = gridPosition,
-            _actionValue = targetCountAtGridPosition * 10,
+            //_shootWeight = canShootWeight * 100,
+            _actionValue = canShootWeight + moveCloserWeight,
         };
     }
+
+    public override string ToString() => $"Move Action to {_positionList[_positionList.Count - 1]}";
 }

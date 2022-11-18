@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 788247155882038484, guid: 41d284a9b930acf4d8c171a029218b26,
+        type: 3}
+      propertyPath: obstaclesLayerMask.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 6934776214254003776, guid: 41d284a9b930acf4d8c171a029218b26,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

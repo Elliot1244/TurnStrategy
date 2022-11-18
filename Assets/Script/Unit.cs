@@ -162,8 +162,7 @@ public class Unit : MonoBehaviour
         OnAnyUnitDead?.Invoke(this, EventArgs.Empty);
     }
 
-    public float GetHealthNormalized()
-    {
-        return _healthSystem.GetHealthNormalized();
-    }
+    public float GetHealthNormalized() => _healthSystem.GetHealthNormalized();
+    public int Health => _healthSystem.Health;
+
 }

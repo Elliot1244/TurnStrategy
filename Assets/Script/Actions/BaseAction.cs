@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public  abstract class BaseAction : MonoBehaviour
 {
@@ -67,26 +68,10 @@ public  abstract class BaseAction : MonoBehaviour
 
     public EnemyAction GetBestEnemyAction()
     {
-        List<EnemyAction> enemyActionList = new List<EnemyAction>();
-        List<GridPosition> validActionGridPositionList =  GetValidActionGridPosition();
-
-        foreach(GridPosition gridPosition in validActionGridPositionList)
-        {
-            EnemyAction enemyAction = GetEnemyAction(gridPosition);
-            enemyActionList.Add(enemyAction);
-        }
-
-        if(enemyActionList.Count > 0)
-        {
-            enemyActionList.Sort((EnemyAction a, EnemyAction b) => b._actionValue - a._actionValue);
-            return enemyActionList[0];
-        }
-        else
-        {
-            return null;
-        }
-
-        
+        var l = GetValidActionGridPosition()
+             .Select(i => GetEnemyAction(i))
+             .OrderByDescending(i => i._actionValue).ToList();
+        return l.FirstOrDefault();
     }
 
     public abstract EnemyAction GetEnemyAction(GridPosition gridPosition);

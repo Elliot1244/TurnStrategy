@@ -63,7 +63,7 @@ public class Pathfinding : MonoBehaviour
     }
 
     //Récupère une liste de deux gridPosition avec la position de début et celle de fin
-    public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition)
+    public List<GridPosition> FindPath(GridPosition startGridPosition, GridPosition endGridPosition, out int pathLength)
     {
         //Liste des nodes dispo pour être cherchés
         List<PathNode> openList = new List<PathNode>();
@@ -103,6 +103,7 @@ public class Pathfinding : MonoBehaviour
             if (currentNode == endNode)
             {
                 //On a fini la recherche des nodes
+                pathLength = endNode.GetFCost();
                 return CalculatePath(endNode);
             }
 
@@ -141,6 +142,7 @@ public class Pathfinding : MonoBehaviour
         }
 
         //Pas de chemin valable trouvé
+        pathLength = 0;
         return null;
     }
 
@@ -152,6 +154,23 @@ public class Pathfinding : MonoBehaviour
         int remainingDistance = Mathf.Abs(xDistance - zDistance);
         return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, zDistance) + MOVE_STRAIGHT_COST * remainingDistance;
     }
+
+    public bool IsWalkableGridPosition(GridPosition gridPosition)
+    {
+        return _gridSystem.GetGridObject(gridPosition).IsWakable();
+    }
+
+    public bool HasPath(GridPosition startGridPosition, GridPosition endGridPosition)
+    {
+        return FindPath(startGridPosition, endGridPosition, out int pathLength) != null;
+    }
+
+    public int GetPathLength(GridPosition startGridPosition, GridPosition endGridPosition)
+    {
+        FindPath(startGridPosition, endGridPosition, out int pathLength);
+        return pathLength;
+    }
+
 
     private PathNode GetLowestFCostPathNode(List<PathNode> pathNodeList)
     {
@@ -257,7 +276,7 @@ public class Pathfinding : MonoBehaviour
 
 
     //Renvoi une casse sur la grille qui est walkable
-    public bool IsWalkableGridPosition(GridPosition gridPosition)
+    public bool IsWakableGridPosition(GridPosition gridPosition)
     {
         return _gridSystem.GetGridObject(gridPosition).IsWakable();
     }

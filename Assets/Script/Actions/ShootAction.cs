@@ -24,6 +24,9 @@ public class ShootAction : BaseAction
 
     [SerializeField] int _maxShootDistance;
     [SerializeField] int _rotateToShootSpeed;
+    [SerializeField] private LayerMask obstaclesLayerMask;
+
+
     private State _state;
     private float _stateTimer;
     private Unit _targetUnit;
@@ -141,6 +144,21 @@ public class ShootAction : BaseAction
                     continue;
                 }
 
+                Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
+                Vector3 shootDir = (targetUnit.GetWorldPosition() - unitWorldPosition).normalized;
+
+                float unitShoulderHeight = 1.7f;
+                if (Physics.Raycast(
+                        unitWorldPosition + Vector3.up * unitShoulderHeight,
+                        shootDir,
+                        Vector3.Distance(unitWorldPosition, targetUnit.GetWorldPosition()),
+                        obstaclesLayerMask))
+                {
+                    // Blocked by an Obstacle
+                    continue;
+                }
+
+
                 validGridPosition.Add(testGridPosition);
             }
         }
@@ -191,11 +209,15 @@ public class ShootAction : BaseAction
     public override EnemyAction GetEnemyAction(GridPosition gridPosition)
     {
         Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(gridPosition);
-        
+
+        var canShoot = 10000;
+        var lowLifePref = 15000 / targetUnit.Health;
+
         return new EnemyAction
         {
             _gridPosition = gridPosition,
-            _actionValue = 100 + Mathf.RoundToInt ((1 - targetUnit.GetHealthNormalized()) * 100f),
+            //_actionValue = 100 + Mathf.RoundToInt ((1 - targetUnit.GetHealthNormalized()) * 100f),
+            _actionValue = canShoot + lowLifePref,
         };
     }
 
@@ -203,4 +225,6 @@ public class ShootAction : BaseAction
     {
         return GetValidActionGridPosition(gridPosition).Count;
     }
+
+    public override string ToString() => $"ShootAction to {_targetUnit.name}";
 }
