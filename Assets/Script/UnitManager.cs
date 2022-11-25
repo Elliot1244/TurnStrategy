@@ -9,7 +9,7 @@ public class UnitManager : MonoBehaviour
 
     private List<Unit> _unitList;
     public List<Unit> _friendlyUnitnitList;
-    private List<Unit> _enemyUnitList;
+    public List<Unit> _enemyUnitList;
 
     private void Awake()
     {

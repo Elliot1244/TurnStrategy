@@ -2593,6 +2593,7 @@ GameObject:
   - component: {fileID: 7088139979849120464}
   - component: {fileID: 2610701210410625178}
   - component: {fileID: 7521608653493061863}
+  - component: {fileID: 7256096092264698111}
   m_Layer: 7
   m_Name: Unit
   m_TagString: Untagged
@@ -2687,6 +2688,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxShootDistance: 7
   _rotateToShootSpeed: 20
+  obstaclesLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &7088139979849120464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2715,7 +2719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 383dc94eabe9aad41bccd312ea71151c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 1000
+  _health: 125
 --- !u!114 &7521608653493061863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2731,6 +2735,21 @@ MonoBehaviour:
   _ragdollPrefab: {fileID: 8362750874518404859, guid: bfd36653f8d142641be895881420fd17,
     type: 3}
   _originalRootBone: {fileID: 7045224728499926860}
+--- !u!114 &7256096092264698111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8362750874518404861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deb4eac231f768f4ca267a970eedfc62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxThrowDistance: 0
+  _grenadePrefab: {fileID: 8772325625465414840, guid: f297eaaca99d15648b6ab3d6acf4443b,
+    type: 3}
 --- !u!1 &9040456627767537350
 GameObject:
   m_ObjectHideFlags: 0

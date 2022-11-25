@@ -57,6 +57,23 @@ public class CameraManager : MonoBehaviour
                 ShowActionCamera();
 
                 break;
+
+            case MoveAction moveAction:
+                Unit movingUnit = moveAction.GetUnit();
+
+               Vector3 MoveCameHeight = Vector3.up * 25.5f;
+
+                Vector3 MoveCameraPosition = movingUnit.GetWorldPosition() + MoveCameHeight;
+
+                if (UnitManager.Instance._enemyUnitList.Contains(movingUnit))
+                {
+                    _actionCamera.transform.position = MoveCameraPosition;
+                    _actionCamera.transform.LookAt(movingUnit.GetWorldPosition());
+                    ShowActionCamera();
+
+                }
+
+                break;
         }           
     }
 
@@ -64,6 +81,12 @@ public class CameraManager : MonoBehaviour
     {
         //Si l'action finie est le shoot alors
         if (sender is ShootAction)
+        {
+            HideActionCamera();
+            SoundScript.Instance.SoundOff();
+        }
+
+        if(sender is MoveAction)
         {
             HideActionCamera();
         }

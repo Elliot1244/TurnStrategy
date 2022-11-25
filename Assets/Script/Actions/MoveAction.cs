@@ -110,19 +110,23 @@ public class MoveAction : BaseAction
                 }
 
                 //Si la position n'est pas walkable, on ne la prend pas en compte
-              if(!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
+                if (!Pathfinding.Instance.IsWalkableGridPosition(testGridPosition))
+                {
+                    continue;
+                }
+
+                if (!Pathfinding.Instance.HasPath(unitGridPosition, testGridPosition))
                 {
                     continue;
                 }
 
                 int pathfindingDistanceMultiplier = 10;
-
-                //Si la case n'est pas à portée de distance de mouvement
                 if (Pathfinding.Instance.GetPathLength(unitGridPosition, testGridPosition) > _maxMoveDistance * pathfindingDistanceMultiplier)
                 {
-                    
+                    // Path length is too long
                     continue;
                 }
+
 
 
                 validGridPosition.Add(testGridPosition);
