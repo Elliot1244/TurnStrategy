@@ -26,7 +26,7 @@ public class ShootAction : BaseAction
 
     [SerializeField] int _maxShootDistance;
     [SerializeField] int _rotateToShootSpeed;
-    [SerializeField] private LayerMask obstaclesLayerMask;
+    [SerializeField] private LayerMask _obstaclesLayerMask;
 
 
     private State _state;
@@ -154,7 +154,7 @@ public class ShootAction : BaseAction
                         unitWorldPosition + Vector3.up * unitShoulderHeight,
                         shootDir,
                         Vector3.Distance(unitWorldPosition, targetUnit.GetWorldPosition()),
-                        obstaclesLayerMask))
+                        _obstaclesLayerMask))
                 {
                     // Blocked by an Obstacle
                     continue;

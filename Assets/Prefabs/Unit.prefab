@@ -2688,9 +2688,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxShootDistance: 7
   _rotateToShootSpeed: 20
-  obstaclesLayerMask:
+  _obstaclesLayerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
 --- !u!114 &7088139979849120464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2747,9 +2747,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb4eac231f768f4ca267a970eedfc62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxThrowDistance: 0
+  _maxThrowDistance: 5
   _grenadePrefab: {fileID: 8772325625465414840, guid: f297eaaca99d15648b6ab3d6acf4443b,
     type: 3}
+  _obstaclesLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &9040456627767537350
 GameObject:
   m_ObjectHideFlags: 0

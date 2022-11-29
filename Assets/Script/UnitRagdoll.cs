@@ -10,7 +10,9 @@ public class UnitRagdoll : MonoBehaviour
     {
         MatchAllChildTransforms(originalRootBone, _ragdollRootBone);
 
-        ApplyExplosionToRagdoll(_ragdollRootBone, 300f, transform.position, 50f);
+        Vector3 randomDir = new Vector3(Random.Range(-1f, +1f), 0, Random.Range(-1f, +1f));
+
+        ApplyExplosionToRagdoll(_ragdollRootBone, 300f, transform.position + randomDir, 50f);
     }
     
     private void MatchAllChildTransforms(Transform root, Transform clone)

@@ -1387,6 +1387,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1452,7 +1453,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_LocalRotation: {x: 0.004420818, y: 0.96077883, z: -0.27685592, w: 0.015341659}
+  m_LocalRotation: {x: 0.004420828, y: 0.96077883, z: -0.27685592, w: 0.015341692}
   m_LocalPosition: {x: 17.695202, y: 15.000001, z: 57.541622}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1527,6 +1528,28 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c11265b855408d42af33d62691f5194, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ChannelMask: 1
+  m_Gain: 1
+  m_Use2DDistance: 0
+  m_UseLocalSpace: 1
+  m_ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    m_AmplitudeGain: 10
+    m_FrequencyGain: 5
+    m_Duration: 20
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1001 &345639093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2984,7 +3007,7 @@ PrefabInstance:
     - target: {fileID: 8362750874518404859, guid: 41d284a9b930acf4d8c171a029218b26,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.256457
+      value: 21.506456
       objectReference: {fileID: 0}
     - target: {fileID: 8362750874518404859, guid: 41d284a9b930acf4d8c171a029218b26,
         type: 3}
@@ -2994,7 +3017,7 @@ PrefabInstance:
     - target: {fileID: 8362750874518404859, guid: 41d284a9b930acf4d8c171a029218b26,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 43.847004
+      value: 47.847004
       objectReference: {fileID: 0}
     - target: {fileID: 8362750874518404859, guid: 41d284a9b930acf4d8c171a029218b26,
         type: 3}
@@ -3423,7 +3446,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 829925214}
-  m_LocalRotation: {x: 0.004420818, y: 0.96077883, z: -0.27685592, w: 0.015341659}
+  m_LocalRotation: {x: 0.004420828, y: 0.96077883, z: -0.27685592, w: 0.015341692}
   m_LocalPosition: {x: 17.695202, y: 15.000001, z: 57.541622}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4497,6 +4520,11 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1029247951}
     m_Modifications:
+    - target: {fileID: 7256096092264698111, guid: 41d284a9b930acf4d8c171a029218b26,
+        type: 3}
+      propertyPath: _maxThrowDistance
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8362750874518404859, guid: 41d284a9b930acf4d8c171a029218b26,
         type: 3}
       propertyPath: m_RootOrder
@@ -5322,6 +5350,11 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1029247951}
     m_Modifications:
+    - target: {fileID: 788247155882038484, guid: 41d284a9b930acf4d8c171a029218b26,
+        type: 3}
+      propertyPath: obstaclesLayerMask.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 6399545339974429222, guid: 41d284a9b930acf4d8c171a029218b26,
         type: 3}
       propertyPath: _maxMoveDistance
@@ -6329,7 +6362,7 @@ PrefabInstance:
     - target: {fileID: 3624367100179444932, guid: e8f70fa1d4eefa84085b0433cf09beff,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.253971
+      value: 23.003971
       objectReference: {fileID: 0}
     - target: {fileID: 3624367100179444932, guid: e8f70fa1d4eefa84085b0433cf09beff,
         type: 3}
@@ -6339,7 +6372,7 @@ PrefabInstance:
     - target: {fileID: 3624367100179444932, guid: e8f70fa1d4eefa84085b0433cf09beff,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 45.847004
+      value: 37.847004
       objectReference: {fileID: 0}
     - target: {fileID: 3624367100179444932, guid: e8f70fa1d4eefa84085b0433cf09beff,
         type: 3}
@@ -6391,6 +6424,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _maxShootDistance
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 788247155882038484, guid: 41d284a9b930acf4d8c171a029218b26,
+        type: 3}
+      propertyPath: obstaclesLayerMask.m_Bits
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 6399545339974429222, guid: 41d284a9b930acf4d8c171a029218b26,
         type: 3}
