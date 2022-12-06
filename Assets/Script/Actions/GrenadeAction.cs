@@ -45,7 +45,7 @@ public class GrenadeAction : BaseAction
         // Get the distance to the target
         var distanceToTarget = Vector3.Distance(unitWorldPosition, targetWorldPosition);
         // Create the ray - with height offset
-        var offset = Vector3.up * 1f; 
+        var offset = Vector3.up * 2f; 
         var ray = new Ray(unitWorldPosition + offset, directionToTarget);
         // Check if there is an obstacle in the way and return
         return Physics.Raycast(ray, distanceToTarget, _obstaclesLayerMask);

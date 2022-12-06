@@ -8,6 +8,8 @@ public class UnitAnimator : MonoBehaviour
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _bulletProjectilePrefab;
     [SerializeField] private Transform _spawner;
+    [SerializeField] private Transform _swordTransform;
+
 
     private void Awake()
     {
@@ -22,6 +24,29 @@ public class UnitAnimator : MonoBehaviour
             shootAction.OnShoot += shootAction_OnShoot;
 
         }
+
+        if (TryGetComponent<SwordAction>(out SwordAction swordAction))
+        {
+            swordAction.OnSwordActionStarted += SwordAction_OnSwordActionStarted;
+            swordAction.OnSwordActionCompleted += SwordAction_OnSwordActionCompleted;
+
+        }
+    }
+
+    private void Start()
+    {
+        NoSword();
+    }
+
+    private void SwordAction_OnSwordActionStarted(object sender, EventArgs e)
+    {
+        DrawSword();
+        _animator.SetTrigger("stab");
+    }
+
+    private void SwordAction_OnSwordActionCompleted(object sender, EventArgs e)
+    {
+        NoSword();
     }
 
     private void MoveAction_OnStartMoving(object sender, EventArgs e)
@@ -45,6 +70,16 @@ public class UnitAnimator : MonoBehaviour
         Vector3 targetUnitShootAtPosition = e.targetUnit.GetWorldPosition();
         targetUnitShootAtPosition.y = _spawner.position.y;
         bulletProjectile.SetUp(targetUnitShootAtPosition);
+    }
+
+    private void DrawSword()
+    {
+        _swordTransform.gameObject.SetActive(true);
+    }
+
+    private void NoSword()
+    {
+        _swordTransform.gameObject.SetActive(false);
     }
 }
 

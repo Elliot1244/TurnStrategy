@@ -9,6 +9,12 @@ public class ShakeCamTrigger : MonoBehaviour
     {
         ShootAction.OnAnyShoot += ShootAction_OnAnyShoot;
         GrenadeProjectile.OnAnyGrenadeExplode += GrenadeProjectile_OnAnyGrenadeExplode;
+        SwordAction.OnAnySwordHit += SwordAction_OnAnySwordHit;
+    }
+
+    private void SwordAction_OnAnySwordHit(object sender, EventArgs e)
+    {
+        ShakeCam.Instance.Shake(5f);
     }
 
     private void GrenadeProjectile_OnAnyGrenadeExplode(object sender, EventArgs e)
