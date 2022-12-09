@@ -190,6 +190,11 @@ public class GridSystemVisual : MonoBehaviour
 
                 ShowGridPositionRangeSquare(selectdUnit.GetGridPosition(), swordAction.GetMaxSwordDistance(), GridVisualType.RedSoft);
                 break;
+
+            case InteractAction interactAction:
+                gridVisualType = GridVisualType.Blue;
+
+                break;
         }
 
         //On affiche les cases dispos pour l'unit sélectionnée

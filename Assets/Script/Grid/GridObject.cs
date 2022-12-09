@@ -6,6 +6,7 @@ public class GridObject
 {
     private GridSystem<GridObject> _gridSystem;
     private GridPosition _gridPosition;
+    private DoorScript _door;
 
     //sans liste d'unit, problème si deux units se croisent sur la même case
     private List<Unit> _unitList;
@@ -61,5 +62,15 @@ public class GridObject
         {
             return null;
         }
+    }
+
+    public DoorScript GetDoor()
+    {
+        return _door;
+    }
+
+    public void SetDoor(DoorScript door)
+    {
+        this._door = door;
     }
 }

@@ -2739,6 +2739,7 @@ GameObject:
   - component: {fileID: 7521608653493061863}
   - component: {fileID: 7256096092264698111}
   - component: {fileID: 3406037766565462570}
+  - component: {fileID: -1766953773239837198}
   m_Layer: 7
   m_Name: Unit
   m_TagString: Untagged
@@ -2913,6 +2914,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxSwordDistance: 1
   _rotateToShootSpeed: 20
+--- !u!114 &-1766953773239837198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8362750874518404861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81a15dc2d2e298c488a39e27143602a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxInteractDistance: 1
 --- !u!1 &9040456627767537350
 GameObject:
   m_ObjectHideFlags: 0
