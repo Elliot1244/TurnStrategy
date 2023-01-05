@@ -34,30 +34,10 @@ public class CameraController : MonoBehaviour
     //Déplacement
     private void HandleMovement()
     {
-        //Controle mouvement camera, on utilise GetKey pour pouvoir bouger la caméra en maintenant la touche enfoncée
-        Vector3 inputMoveDir = new Vector3(0, 0, 0);
-        if (Input.GetKey(KeyCode.W))
-        {
-            inputMoveDir.z = +1f;
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            inputMoveDir.z = -1f;
-        }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            inputMoveDir.x = -1f;
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            inputMoveDir.x = +1f;
-        }
+        Vector3 inputMoveDir = InputManager.Instance.GetCameraMoveVector();
 
         //Permet de déplacer la caméra selon son angle de rotation
-        Vector3 moveVector = transform.forward * inputMoveDir.z + transform.right * inputMoveDir.x;
+        Vector3 moveVector = transform.forward * inputMoveDir.y + transform.right * inputMoveDir.x;
         transform.position += moveVector * _moveSpeed * Time.deltaTime;
     }
 
@@ -67,15 +47,7 @@ public class CameraController : MonoBehaviour
         //Roatation de la camera
         Vector3 rotationVector = new Vector3(0, 0, 0);
 
-        if (Input.GetKey(KeyCode.X))
-        {
-            rotationVector.y = +1f;
-        }
-
-        if (Input.GetKey(KeyCode.C))
-        {
-            rotationVector.y = -1f;
-        }
+        rotationVector.y = InputManager.Instance.GetCamerarotateAmount();
 
         transform.eulerAngles += rotationVector * _rotationSpeed * Time.deltaTime;
     }
@@ -83,18 +55,9 @@ public class CameraController : MonoBehaviour
     //Zoom
     private void HandleZoom()
     {
-        //Zoom camera
-        if (Input.mouseScrollDelta.y > 0)
-        {
+        float zoomIncreaseAmount = 1f;
+        _targetFollowOffset.y += InputManager.Instance.GetCameraZoomAmount() * zoomIncreaseAmount;
 
-            _targetFollowOffset.y -= _zoomAmount;
-        }
-
-        if (Input.mouseScrollDelta.y < 0)
-        {
-
-            _targetFollowOffset.y += _zoomAmount;
-        }
 
         //Check valeur du scroll est entre valeurs min et max possible avant récupération de la valeur
         _targetFollowOffset.y = Mathf.Clamp(_targetFollowOffset.y, MIN_FOLLOW_Y_OFFSET, MAX_FOLLOW_Y_OFFSET);
