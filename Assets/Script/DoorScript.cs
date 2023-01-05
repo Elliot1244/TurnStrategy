@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class DoorScript : MonoBehaviour
+public class DoorScript : MonoBehaviour, IInteractable
 {
     [SerializeField] private bool _isOpen;
 
     private GridPosition _gridPosition;
     private Animator _animator;
-    private Action _onInteractComplete;
+    private Action _onInteractionComplete;
     private float _timer;
     private bool _isActive;
+
 
     private void Awake()
     {
@@ -21,7 +22,9 @@ public class DoorScript : MonoBehaviour
     private void Start()
     {
         _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
-        LevelGrid.Instance.SetDoorAtGridPosition(_gridPosition, this);
+        LevelGrid.Instance.SetInteractableAtGridPosition(_gridPosition, this);
+        LayerMask _mask = LayerMask.GetMask("Obstacles");
+
 
         if(_isOpen == true)
         {
@@ -47,15 +50,15 @@ public class DoorScript : MonoBehaviour
         if(_timer <= 0f)
         {
             _isActive = false;
-            _onInteractComplete();
+            _onInteractionComplete();
         }
     }
-    public void Interact(Action onInteractComplete)
+    public void Interact(Action onInteractionComplete)
     {
 
         _isActive = true;
         _timer = 0.5f;
-        this._onInteractComplete = onInteractComplete;
+        this._onInteractionComplete = onInteractionComplete;
         if (_isOpen == true)
         {
             CloseDoor();
@@ -72,6 +75,7 @@ public class DoorScript : MonoBehaviour
     {
         _isOpen = true;
         _animator.SetBool("isOpen", _isOpen);
+        LayerMask _mask = LayerMask.GetMask("Default");
         Pathfinding.Instance.SetisWalkableGridPosition(_gridPosition, true);
     }
 
@@ -79,6 +83,7 @@ public class DoorScript : MonoBehaviour
     {
         _isOpen = false;
         _animator.SetBool("isOpen", _isOpen);
+        LayerMask _mask = LayerMask.GetMask("Obstacles");
         Pathfinding.Instance.SetisWalkableGridPosition(_gridPosition, false);
     }
 }

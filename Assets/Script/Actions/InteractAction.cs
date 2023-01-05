@@ -56,10 +56,10 @@ public class InteractAction : BaseAction
                     continue;
                 }
 
-                DoorScript door = LevelGrid.Instance.GetDoorAtGridPosition(testGridPosition);
+                IInteractable interactable = LevelGrid.Instance.GetInteractableAtGridPosition(testGridPosition);
 
-                //S'il n'y a pas de porte sur la case, on ne la prend pas en compte
-                if(door == null)
+                //S'il n'y a pas d'object interactable sur la case, on ne la prend pas en compte
+                if(interactable == null)
                 {
                     continue;
                 }
@@ -73,8 +73,8 @@ public class InteractAction : BaseAction
 
     public override void TakeAction(GridPosition gridPosition, Action onActionComplete)
     {
-        DoorScript door = LevelGrid.Instance.GetDoorAtGridPosition(gridPosition);
-        door.Interact(OnInteractComplete);
+        IInteractable interactable = LevelGrid.Instance.GetInteractableAtGridPosition(gridPosition);
+        interactable.Interact(OnInteractComplete);
         ActionStart(onActionComplete);
     }
 

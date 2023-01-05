@@ -6,7 +6,7 @@ public class GridObject
 {
     private GridSystem<GridObject> _gridSystem;
     private GridPosition _gridPosition;
-    private DoorScript _door;
+    private IInteractable _interactable;
 
     //sans liste d'unit, problème si deux units se croisent sur la même case
     private List<Unit> _unitList;
@@ -64,13 +64,13 @@ public class GridObject
         }
     }
 
-    public DoorScript GetDoor()
+    public IInteractable GetInteractable()
     {
-        return _door;
+        return _interactable;
     }
 
-    public void SetDoor(DoorScript door)
+    public void SetInteractable(IInteractable interactable)
     {
-        this._door = door;
+        this._interactable = interactable;
     }
 }
