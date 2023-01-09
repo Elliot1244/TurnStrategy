@@ -6,7 +6,7 @@ using System;
 public class Unit : MonoBehaviour
 {
     //Constante qui définie le nombre de point d'action par unité
-    private const int ACTION_POINT_MAX = 90;
+    private const int ACTION_POINT_MAX = 2;
 
     [SerializeField] private bool _isEnemy;
 

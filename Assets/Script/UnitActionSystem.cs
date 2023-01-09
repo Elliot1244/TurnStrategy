@@ -77,7 +77,7 @@ public class UnitActionSystem : MonoBehaviour
 
     private void HandleSelectedAction()
     {
-        if(InputManager.Instance.IsMouseButtonDown())
+        if(InputManager.Instance.IsMouseButtonDownThisFrame())
         {
             GridPosition mouseGridPosition = LevelGrid.Instance.GetGridPosition(MouseWorld.GetPosition());
 
@@ -122,7 +122,7 @@ public class UnitActionSystem : MonoBehaviour
     //Fonction qui sélectionne l'unit
     private bool TryHandleUnitSelection()
     {
-        if(InputManager.Instance.IsMouseButtonDown())
+        if(InputManager.Instance.IsMouseButtonDownThisFrame())
         {
             //On récupère la position de la souris dans le jeu
             Ray ray = Camera.main.ScreenPointToRay(InputManager.Instance.GetMouseScreenPosition());
