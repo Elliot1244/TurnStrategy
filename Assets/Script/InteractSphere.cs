@@ -9,6 +9,7 @@ public class InteractSphere : MonoBehaviour, IInteractable
     [SerializeField] Material _greenMatarial;
     [SerializeField] Material _redMatarial;
     [SerializeField] MeshRenderer _meshRenderer;
+    [SerializeField] GameObject _barrierOne;
 
     private GridPosition _gridPosition;
     private Action _onInteractionComplete;
@@ -18,7 +19,7 @@ public class InteractSphere : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        SetColorGreen();
+        SetColorRed();
 
         _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
         LevelGrid.Instance.SetInteractableAtGridPosition(_gridPosition, this);
@@ -45,12 +46,14 @@ public class InteractSphere : MonoBehaviour, IInteractable
     {
         _isGreen = true;
         _meshRenderer.material = _greenMatarial;
+        Destroy(_barrierOne);
     }
 
     private void SetColorRed()
     {
         _isGreen= false;
         _meshRenderer.material = _redMatarial;
+        _barrierOne.SetActive(true);
     }
 
     public void Interact(Action onInteractionComplete)
