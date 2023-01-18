@@ -147,20 +147,20 @@ public class MoveAction : BaseAction
 
     public override EnemyAction GetEnemyAction(GridPosition gridPosition)
     {
-        int targetCountAtGridPosition = _unit.GetAction<ShootAction>().GetTargetCountAtPosition(gridPosition);
+            int targetCountAtGridPosition = _unit.GetAction<ShootAction>().GetTargetCountAtPosition(gridPosition);
 
-        int canShootWeight = targetCountAtGridPosition * 10;
-        int moveCloserWeight = UnitManager.Instance.GetFriendlyUnitList()
-            .Select(i => EstimateDistance(gridPosition, i.GetGridPosition()))
-            .Sum();
-        moveCloserWeight = 10000 / moveCloserWeight;
+            int canShootWeight = targetCountAtGridPosition * 10;
+            int moveCloserWeight = UnitManager.Instance.GetFriendlyUnitList()
+                .Select(i => EstimateDistance(gridPosition, i.GetGridPosition()))
+                .Sum();
+            moveCloserWeight = 10000 / moveCloserWeight;
 
-        return new EnemyAction
-        {
-            _gridPosition = gridPosition,
+            return new EnemyAction
+            {
+                _gridPosition = gridPosition,
 
-            _actionValue = canShootWeight + moveCloserWeight,
-        };
+                _actionValue = canShootWeight + moveCloserWeight,
+            };
     }
 
     public override string ToString() => $"Move Action to {_positionList[_positionList.Count - 1]}";

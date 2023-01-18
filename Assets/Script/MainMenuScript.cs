@@ -7,7 +7,8 @@ public class MainMenuScript : MonoBehaviour
 {
     public void PlayNextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("SampleScene");
     }
 
     public void ExitGame()

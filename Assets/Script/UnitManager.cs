@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance { get; private set; }
+
+    
 
     private List<Unit> _unitList;
     public List<Unit> _friendlyUnitnitList;
@@ -32,6 +35,7 @@ public class UnitManager : MonoBehaviour
         Unit.OnAnyUnitSpawned += Unit_OnAnyUnitSpawned;
         Unit.OnAnyUnitDead += Unit_OnAnyUnitDead;
     }
+
 
     private void Unit_OnAnyUnitSpawned(object sender, EventArgs e )
     {

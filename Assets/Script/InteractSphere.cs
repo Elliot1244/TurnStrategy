@@ -10,6 +10,7 @@ public class InteractSphere : MonoBehaviour, IInteractable
     [SerializeField] Material _redMatarial;
     [SerializeField] MeshRenderer _meshRenderer;
     [SerializeField] GameObject _barrierOne;
+    [SerializeField] private Canvas _defeatMenu;
 
     private GridPosition _gridPosition;
     private Action _onInteractionComplete;
@@ -46,14 +47,15 @@ public class InteractSphere : MonoBehaviour, IInteractable
     {
         _isGreen = true;
         _meshRenderer.material = _greenMatarial;
-        Destroy(_barrierOne);
+        //Destroy(_barrierOne);
+        _defeatMenu.gameObject.SetActive(true);
     }
 
     private void SetColorRed()
     {
         _isGreen= false;
         _meshRenderer.material = _redMatarial;
-        _barrierOne.SetActive(true);
+        //_barrierOne.SetActive(true);
     }
 
     public void Interact(Action onInteractionComplete)
